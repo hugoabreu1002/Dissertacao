@@ -10,25 +10,21 @@ A utilização de técnicas de inteligência artificial aplicadas a este tema te
 
 São encontrados alguns métodos de previsão de energia fotovoltaica na literatura, sendo subdivididos de acordo com o horizonte de previsão. A tabela abaixo resume os prazos e aplicações para cada método.
 
-\begin{table}
-    \begin{tabular}[]{@{}rlcl@{}}
-        \caption{Demonstration of simple table syntax. \label{mytable}}\tabularnewline
-        \toprule
-        Right & Left\tabularnewline
-        \midrule
-        \endfirsthead
-        \toprule
-        \midrule
-        \endhead
-        12 & 12\tabularnewline
-        123 & 123 \tabularnewline
-        1 & 1 \tabularnewline
-        \bottomrule
-        \caption*{Fonte: Autor.}
-    \end{tabular}
+\begin{table}[!ht]
+\caption{Demonstration of simple table syntax.} 
+\label{tab:app_forecast}
+\begin{tabular}{c|c|c}
+\textbf{Horizonte} & \textbf{Período máximo} & \textbf{Aplicação}                                                                                                                       \\ \hline
+Curtíssimo prazo   & Minutos                 & \begin{tabular}[c]{@{}c@{}}controle e gestão de sistemas fotovoltaicos\\microredes\\mercado de eletricidade\end{tabular}             \\ \hline
+Curto prazo        & 72h                     & \begin{tabular}[c]{@{}c@{}}controle das operações do sistema de potência\\despacho econômico\\comprometimento da unidade\end{tabular} \\ \hline
+Médio prazo        & Semana                  & manutenção e planejamento de usinas fotovoltaicas                                                                                      \\ \hline
+Longo prazo        & Ano                     & manutenção e planejamento de usinas fotovoltaicas                                                   
+\end{tabular}
+\vspace{\tabcapgap}
+Fonte: Autor.
 \end{table}
 
-Previsão de curtíssimo prazo com horizonte de tempo variando de alguns segundos a alguns minutos; previsão de curto prazo até 48-72 h à frente; previsão de médio prazo de alguns dias a uma semana antes; previsão de longo prazo de alguns meses a um ano ou mais. Cada horizonte de previsão tem sua aplicação específica para que, por exemplo, sejam utilizados previsores de curtíssimo prazo para o controle e gestão de sistemas fotovoltaicos, no mercado de eletricidade, para o controle de microrredes, etc. Adotam-se horizontes de curto prazo para o controle das operações do sistema de potência, despacho econômico, comprometimento da unidade, etc. Os horizontes de médio e longo prazos são normalmente utilizados para a manutenção e o planejamento de usinas fotovoltaicas \cite{mellit2020advanced}.
+Previsão de curtíssimo prazo com horizonte de tempo variando de alguns segundos a alguns minutos; previsão de curto prazo até 48-72 h à frente; previsão de médio prazo de alguns dias a uma semana antes; previsão de longo prazo de alguns meses a um ano ou mais. Cada horizonte de previsão tem sua aplicação específica para que, por exemplo, sejam utilizados previsores de curtíssimo prazo para o  etc. Adotam-se horizontes de curto prazo para o , etc. Os horizontes de médio e longo prazos são normalmente utilizados para a \cite{mellit2020advanced}.
 
 Este trabalho busca unir de uma melhor forma o uso da ciência de dados e algoritmos de aprendizado de máquina para estimação de potencial de geração em sítios, levando a otimização da escolha utilizando dados reais de geração e dados de simulação, levando em consideração diversas bases de dados diferentes em um estudo de caso para a região nordeste do Brasil.
 
