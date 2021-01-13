@@ -8,23 +8,20 @@ Estimativa de potencial de geração fotovoltaico é um tema que já obteve gran
 
 A utilização de técnicas de inteligência artificial aplicadas a este tema tem focado na predição temporal de geração \cite{voyant2017machine, wolff2016statistical, li2016hierarchical}. Este tipo de predição é muito útil levando-se em consideração o sistema elétrico completo de uma região ou país, para balanceamento de oferta e demanda, sendo possível uma programabilidade maior para o operador do sistema elétrico, em relação a adequação do uso de outras fontes de energia.
 
-São encontrados alguns métodos de previsão de energia fotovoltaica na literatura, sendo subdivididos de acordo com o horizonte de previsão. A tabela abaixo resume os prazos e aplicações para cada método.
+São encontrados alguns métodos de previsão de energia fotovoltaica na literatura, sendo subdivididos de acordo com o horizonte de previsão \cite{mellit2020advanced}. A Tabela \ref{tab:app_forecast} resume os prazos e aplicações para cada método.
 
 \begin{table}[!ht]
 \caption{Demonstration of simple table syntax.} 
 \label{tab:app_forecast}
 \begin{tabular}{c|c|c}
-\textbf{Horizonte} & \textbf{Período máximo} & \textbf{Aplicação}                                                                                                                       \\ \hline
-Curtíssimo prazo   & Minutos                 & \begin{tabular}[c]{@{}c@{}}controle e gestão de sistemas fotovoltaicos\\microredes\\mercado de eletricidade\end{tabular}             \\ \hline
+\textbf{Horizonte} & \textbf{Período máximo} & \textbf{Aplicação}                                                                                                               \\ \hline
+Curtíssimo prazo   & Minutos                 & \begin{tabular}[c]{@{}c@{}}controle e gestão de sistemas fotovoltaicos\\microredes\\mercado de eletricidade\end{tabular}         \\ \hline
 Curto prazo        & 72h                     & \begin{tabular}[c]{@{}c@{}}controle das operações do sistema de potência\\despacho econômico\\comprometimento da unidade\end{tabular} \\ \hline
-Médio prazo        & Semana                  & manutenção e planejamento de usinas fotovoltaicas                                                                                      \\ \hline
-Longo prazo        & Ano                     & manutenção e planejamento de usinas fotovoltaicas                                                   
+Médio prazo        & Semanas                  & manutenção e planejamento de usinas fotovoltaicas \\ \hline
+Longo prazo        & Anos                     & manutenção e planejamento de usinas fotovoltaicas  \\ \hline                                               
 \end{tabular}
-\vspace{\tabcapgap}
-Fonte: Autor.
+\source{Autor.}
 \end{table}
-
-Previsão de curtíssimo prazo com horizonte de tempo variando de alguns segundos a alguns minutos; previsão de curto prazo até 48-72 h à frente; previsão de médio prazo de alguns dias a uma semana antes; previsão de longo prazo de alguns meses a um ano ou mais. Cada horizonte de previsão tem sua aplicação específica para que, por exemplo, sejam utilizados previsores de curtíssimo prazo para o  etc. Adotam-se horizontes de curto prazo para o , etc. Os horizontes de médio e longo prazos são normalmente utilizados para a \cite{mellit2020advanced}.
 
 Este trabalho busca unir de uma melhor forma o uso da ciência de dados e algoritmos de aprendizado de máquina para estimação de potencial de geração em sítios, levando a otimização da escolha utilizando dados reais de geração e dados de simulação, levando em consideração diversas bases de dados diferentes em um estudo de caso para a região nordeste do Brasil.
 
@@ -46,5 +43,5 @@ Criar modelos de auto ML capazes de se adaptar e fazer a previsão de séries te
 
 \section{Estrutura da dissertação}
 
-A organização das seções deste trabalho se dá da seguinte forma. Primeiramente será apresentada a teoria por trás da previsão de séries temporais utilizando modelos lineares \ref{cap:series_temp}. No capítulo seguinte \ref{cap:ml_models} são apresentados modelos de machine learning que serão utilizados mais a frente para correção do resíduo.
+A organização das seções deste trabalho se dá da seguinte forma. Primeiramente será apresentada a teoria por trás da previsão de séries temporais utilizando modelos lineares \ref{cap:series_temp}. %No capítulo seguinte \ref{cap:ml_models} são apresentados modelos de machine learning que serão utilizados mais a frente para correção do resíduo.
 No capítulo \ref{cap:dados_prep} será discutido os dados de series temporais horárias obtidos a partir da base de dados do INMET [CITATION NEEDED]. Em seguida no capítulo \ref{cap:mod_props} são apresentados os modelos híbridos que utilizam dos algorítmos de machine learning apresentados no capítulo antecedente.

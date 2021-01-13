@@ -1,6 +1,6 @@
 %%% USE UM DOS DOIS: %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{subcaption}
+
 %\usepackage[cp1252]{inputenc}
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -8,16 +8,17 @@
 \usepackage{epstopdf}
 \usepackage{graphicx}
 \usepackage{adjustbox}
-%\usepackage{floatrow}
 \usepackage[tableposition=top]{caption}
-\usepackage{float}
-\floatstyle{plaintop}
-\restylefloat{table}
+\newcommand{\source}[1]{\caption*{Fonte: {#1}}}
+\usepackage{svg}
+%\usepackage{floatrow}
+%\usepackage{float}
+%\floatstyle{plaintop}
+%\restylefloat{table}
 
 \usepackage{rotating}
 \usepackage[utf8]{inputenc}
 \usepackage[paper=portrait,pagesize]{typearea}
-\usepackage{rotating}
 %\usepackage{titlesec}
 %\setcounter{secnumdepth}{4}
 %\setcounter{tocdepth}{4}
@@ -51,11 +52,11 @@
 \usepackage{footmisc}
 \usepackage{ifthen}
 
-%\usepackage{caption}
-
 %Extra
+%\usepackage{algorithm}
+%\usepackage{algpseudocode}
 \usepackage{algorithmic}
-\usepackage{algorithm}
+\usepackage[portuguese,portuguesekw,ruled,lined]{algorithm2e}
 
 %Extra
 %\usepackage{calligra}                           % Fonte caligr\'{a}fica

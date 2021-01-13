@@ -66,9 +66,65 @@ Neste trabalho, o algoritmo genético é utilizado para hiper-parametrizar, quan
 % falar sobre aspectos gerais do AG e como eles são implementados
 % no MLP e no ENSEMBLE
 
-\section{Correção de resíduo}
+\section{Modelos Híbridos por Correção de Resíduo}
 
-\subsection{AG-MLP-Residual}
+Nesta seção será explicada a forma geral de correção do resíduo, dado pelo erro entre a série temporal original e o modelo linear SARIMAX. A correção se dá a partir do fluxograma da Figura \ref{fig:cap5_fluxograma_cromossomo}. O modelo linear SARIMAX se trata da primeira etapa do processo.
+
+\begin{figure}[htbp]
+    \centering
+    \caption{Fluxograma esquemático dos modelos de correção de resíduo propostos. Os cromossomos são C1-C4. Dois modelos são gerados, um para o resíduo outro para combinar o resíduo modelado com a previsão SARIMAX.}
+    \includegraphics[width=\textwidth]{Figuras/cap5/fluxograma_cromossomos.jpg}
+    \source{Autor.}
+    \label{fig:cap5_fluxograma_cromossomo}
+\end{figure}
+
+Como pode ser visto, existem 4 cromossomos que são utilizados na busca por algoritmo genético. As variáveis do tipo \textit{Lags} se tratam de quantidades de amostrados do passado utilizadas para prever o futuro. Cada um dos cromossomos será melhor explicado abaixo:
+
+\begin{itemize}
+    \item C1: \textit{Lags} para modelar resíduo - De posse do resíduo, estas amostras são utilizadas no Modelo do Resíduo, que se trata de um objeto que também é obtido a partir de busca com algoritmo genético.
+    
+    \item C2: \textit{Lags} SARIMAX - De posse do Modelo Linear SARIMAX é possível obter amostras do passado da série temporal gerada por estes. Essas amostras serão utilizadas na Combinação com Amostras C3 e C4 do Resíduo Modelado.
+    
+    \item C3: \textit{Lags} das previsões do Resíduo Modelado - Com um Modelo ML treinado e otimizado é possível gerar a séries temporal correspondente ao Resíduo Modelado e com testa obter amostras do passado.
+    
+    \item C4: \textit{Forecasts} das previsões do Resíduo Modelado - Análogo ao cromossomo C3, porém com amostras a frente no tempo.
+\end{itemize}
+
+Os cromossomos C1-C4 são inicializados como números inteiros de uma distribuição uniforme de limite inferior 1 e superior 20. Foi estipulado uma probabilidade de mutação e cruzamento de 80\%.
+
+\begin{algorithm}[!htp]
+    \Entrada{população, Prob. Cruzamento}
+    \Saida{Nova população}
+    \Inicio{
+    Mantém o melhor indivíduo;\\
+    Ordena a população \textit{fitness} do melhor ao pior;\\
+    \Para{indivíduo de ordem $I$}{
+    $p$ = random(0,1);\\
+    \Se{$p >$ Prob. Cruzamento}{
+        $C$ = conjunto aleatório de cromossomos;\\
+        população[$I$][$C$] = população[$I\slash2$][$C$]
+    }
+    }
+    }
+    \caption{Cruzamento escolhido para algoritmos híbridos propostos}
+    \label{algo:cap5_cruz_hibrid}
+\end{algorithm}
+
+O operador de cruzamento funciona de acordo com o Algoritmo \ref{algo:cap5_cruz_hibrid}. Os indivíduos são colocados em ordem do melhor \textit{fitness} ao pior, então o melhor indivíduo sempre é levado para a próxima população. Em seguida, para cada um dos indivíduos restantes, é definido aleatoriamente um conjunto dos quatro cromossomos que serão recebidos de um indivíduo de melhor posição, esta que é dada pela posição do individuo simetricamente. A mutação dos cromossomos se dá a partir da variação da adição de um número inteiro obtido por uma distribuição uniforme entre -2 e 2.
+
+Ainda sobre o processo representado pela Figura \ref{fig:cap5_fluxograma_cromossomo}, é necessário explicar exatamente como as variáveis dos cromossomos são necessárias pela modelagem, esta explicação se dá melhor na Figura \ref{fig:cap5_fluxograma_modelos_res_comb}. A segunda etapa do processo é dada pelo Modelo do Resíduo e a terceira, pelo Modelo de Combinação. Em ambas estas etapas, podem ser utilizados quaisquer algoritmos de regressão para que com base nos dados de treino, se gere estes dois modelos e com dados de teste se avalie. 
+
+\begin{figure}[htbp]
+    \centering
+    \caption{Fluxograma detalhado sobre requisitos do Modelo do Resíduo e Modelo de Combinação não Linear.}
+    \includegraphics[width=\textwidth]{Figuras/cap5/fluxograma_modelos_res_comb.jpg}
+    \source{Autor.}
+    \label{fig:cap5_fluxograma_modelos_res_comb}
+\end{figure}
+
+Neste trabalho as etapas 2 Modelo do Resíduo e 3 Modelo de Combinação usam de dois algoritmos de hiper-parametrização de MLPs, baseados em algoritmo genético, descritos nas próximas subseções.
+
+\subsection{AG-MLP}
 
 A metodologia utilizada consiste em gerar um modelo Hibrido entre um ARIMA (Autoregressive Integrated Moving Average) e duas ANN (Artificial Neural Networks). Utilizando para isto MLP (Mult Layer Perceptron). A primeira das redes neurais deve estimar o erro entre a série temporal real e a resultante do modelo ARIMA. Este tipo de modelagem já foi muito utilizada e discutida na literatura \cite{zhang2003time, khashei2010artificial, babu2014moving, de2014hybrid, de2016hybrid, domingos2019intelligent}. A segunda rede neural deve servir para gerar uma função linear de associação entre o modelo SARIMAX e a primeira rede neural.
 
@@ -76,20 +132,7 @@ Para obter as duas ANNs bem treinadas e parametrizadas, tanto para a função de
 
 Nesta busca, o algoritmo gera uma população de MLPs, com parâmetros aleatórios, avalia estes e ranqueia o melhores parâmetros. Depois disso, uma nova população é gerada, após um cruzamento entre melhores e piores MLPs. A melhor MLP é repetida na próxima geração. Depois do cruzamento, os parâmetros numéricos sofrem mutação. Esta nova população é re-avaliada e o ciclo continua.
 
-Para todas as séries foi estipulado 80\% de dados para treino, que são utilizados para realizar o treinamento do algoritmo de otimização e hibridização, bem como todas as MLPs e 20\% para teste, que utilizado para avaliação do modelo híbrido final. Por cima disto, outra busca evolucionárias, é realizada para achar, as variáveis de Lag, quantidade de dados do passado que serão utilizados para prever o próximo dado futuro e Forecast, quantidade de previsões a partir de um modelo. As variáveis em questão são descritas:
-
-\begin{itemize}
-
-    \item Lag Error - Quantidade de amostras do passado utilizadas para prever a próxima amostra futura da serie temporal do erro entre a serie real e a do modelo ARIMA. Obtida sobre a serie do erro, é usado para modelar erro entre a serie original e a obtida pelo ARIMA.
-    
-    \item Forecast Association Error - Quantidade de amostras futuras geradas a partir do erro modelado. Usado para modelar função associativa entre erro modelado e serie ARIMA.
-    
-    \item Lag Association Error - Quantidades de amostras do passado do erro modelo.
-    Usado para modelar função associativa entre erro modelado e serie ARIMA.
-    
-    \item Lag Association ARIMA - Quantidade de amostras do passado da serie do modelo ARIMA: obtida sobre a serie do ARIMA, é usada para modelar função associativa entre erro modelado e serie ARIMA.
-    
-\end{itemize}
+Para todas as séries foi estipulado 80\% de dados para treino, que são utilizados para realizar o treinamento do algoritmo de otimização e hibridização, bem como todas as MLPs e 20\% para teste, que utilizado para avaliação do modelo híbrido final.
 
 O algoritmo evolucionário escolhido não leva em consideração a variabilidade implícita de treinamento de MLPs, entretanto este foi programado de forma a salvar a cada geração os modelos com os pesos treinados, não apenas as topologias.
 
@@ -103,8 +146,8 @@ adaptativa}
     \item quantidade de neurônios nas camada escondida
 \end{itemize}
 
-\subsection{MLP Voting Regressor}
+\subsection{AG-MLP Voting Regressor}
 
 Este modelo é análogo ao anterior, porém com a diferença que ao invés de se escolher uma rede neural melhor para cada um 
 
-\subsection{Voting Regressor Ensembles}
+%\subsection{Voting Regressor Ensembles}
