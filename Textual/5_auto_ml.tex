@@ -56,15 +56,12 @@ A otimização do enxame de partículas (PSO). É um método de otimização ale
 
 Em que $v_i^k$ é a velocidade de cada partícula $i$ na iteração $k$, $x_i^{k}$ é a solução (posição) de cada partícula $i$ na iterção $k$. $c_1$ e $c_2$ são constantes positivas enquanto que $r_1$ e $r_2$ são duas variáveis aleatórios de distribuição uniforme entre 0 e 1. Ainda sobre a equação de atualização da velocidade da partícula,  $w$ é o peso inercial responsável por causar um efeito inercial da velocidade anterior na atual. Pode-se estabelecer um limite de velocidade em todas as dimensões, saturando a velocidade da partícula. \cite{jaberipour2011particle}.
 
-\subsection{SARIMAX ACO-PSO Search}
+\subsection{Auto ARIMA versus SARIMAX ACO-PSO Search}
 
-
-\subsection{Algoritmo Genético}
-
-Neste trabalho, o algoritmo genético é utilizado para hiper-parametrizar, quando se deseja obter parâmetros ótimos.
-% TODO
-% falar sobre aspectos gerais do AG e como eles são implementados
-% no MLP e no ENSEMBLE
+% falar aqui da necessidade de se pensar um algortimo que busque entre
+% as variáveis exógenas e que busque outras possibilidades de frequências.
+% essa é a diferença entre o autoarima. Não vale a pena comparar só com o ACO ou 
+% só com o PSO. Explicar que só o PSO ou só o ACO dá problema de memória.
 
 \section{Modelos Híbridos por Correção de Resíduo}
 
@@ -122,15 +119,12 @@ Ainda sobre o processo representado pela Figura \ref{fig:cap5_fluxograma_cromoss
     \label{fig:cap5_fluxograma_modelos_res_comb}
 \end{figure}
 
-Neste trabalho as etapas 2 Modelo do Resíduo e 3 Modelo de Combinação usam de dois algoritmos de hiper-parametrização de MLPs, baseados em algoritmo genético, descritos nas próximas subseções.
+Neste trabalho para as etapas 2, Modelo do Resíduo e 3, Modelo de Combinação, podem ser escolhidos dois algoritmos de hiper-parametrização de MLPs, baseados em algoritmo genético, descritos nas próximas subseções \ref{subsec:ag-mlp} e \ref{subsec:ag-mlp-vr}.
 
 \subsection{AG-MLP}
+\label{subsec:ag-mlp}
 
-A metodologia utilizada consiste em gerar um modelo Hibrido entre um ARIMA (Autoregressive Integrated Moving Average) e duas ANN (Artificial Neural Networks). Utilizando para isto MLP (Mult Layer Perceptron). A primeira das redes neurais deve estimar o erro entre a série temporal real e a resultante do modelo ARIMA. Este tipo de modelagem já foi muito utilizada e discutida na literatura \cite{zhang2003time, khashei2010artificial, babu2014moving, de2014hybrid, de2016hybrid, domingos2019intelligent}. A segunda rede neural deve servir para gerar uma função linear de associação entre o modelo SARIMAX e a primeira rede neural.
-
-Para obter as duas ANNs bem treinadas e parametrizadas, tanto para a função de associação não linear quanto para a previsão do erro, todo o modelo é envolto por busca baseado em um algoritmo genético. O algoritmo procura os melhores parâmetros para o MLP que estima o erro e o MLP que gera uma função não linear que associa o ARIMA puro e erro modelado como ilustrado pelo pseudo-Algoritmo.
-
-Nesta busca, o algoritmo gera uma população de MLPs, com parâmetros aleatórios, avalia estes e ranqueia o melhores parâmetros. Depois disso, uma nova população é gerada, após um cruzamento entre melhores e piores MLPs. A melhor MLP é repetida na próxima geração. Depois do cruzamento, os parâmetros numéricos sofrem mutação. Esta nova população é re-avaliada e o ciclo continua.
+Para obter a MLP bem parametrizada o algoritmo procura os melhores parâmetros para o MLP. Nesta busca, o algoritmo gera uma população de MLPs, com parâmetros aleatórios, avalia estes e ranqueia o melhores parâmetros. Depois disso, uma nova população é gerada, após um cruzamento entre melhores e piores MLPs. A melhor MLP é repetida na próxima geração. Depois do cruzamento, os parâmetros numéricos sofrem mutação. Esta nova população é re-avaliada e o ciclo continua.
 
 Para todas as séries foi estipulado 80\% de dados para treino, que são utilizados para realizar o treinamento do algoritmo de otimização e hibridização, bem como todas as MLPs e 20\% para teste, que utilizado para avaliação do modelo híbrido final.
 
@@ -147,6 +141,7 @@ adaptativa}
 \end{itemize}
 
 \subsection{AG-MLP Voting Regressor}
+\label{subsec:ag-mlp-vr}
 
 Este modelo é análogo ao anterior, porém com a diferença que ao invés de se escolher uma rede neural melhor para cada um 
 
