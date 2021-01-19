@@ -12,15 +12,57 @@ O fato de series temporais serem denominadas dessa forma está na correlação t
 
 \subsection{ARIMA}
 
-\subsection{SARIMAX}
+Dada uma série temporal definida como $X_t$ sendo $t$ o índice inteiro de cada observação, o modelo ARMA$(p^{'},q)$ é dado pela Equação \ref{eq:arma_model} abaixo, o parâmetro $\alpha_i$ é responsável pela parte auto regressiva do modelo, enquanto que $\theta_i$ pela média móvel. O termo $\varepsilon_t$ representa o erro que é assumido como uma variável aleatória IID, amostrada a partir de uma distribuição normal com média zero \cite{brockwell2002introduction}. 
 
-\section{Métricas}
+\begin{equation}
+\label{eq:arma_model}
+    X_t-\alpha_1X_{t-1}- \dots -\alpha_{p'}X_{t-p'} = \varepsilon_t + \theta_1 \varepsilon_{t-1} + \cdots +\theta_q \varepsilon_{t-q}
+\end{equation}
+
+Uma outra forma de descrever o modelo ARMA é obtida ao se utilizar o operador $L$ que representa os \textit{Lags}, como sendo índices do passado em relação a uma variável, como na Equação \ref{eq:arma_model_L}.
+
+\begin{equation}
+\label{eq:arma_model_L}
+    \left(1 - \sum_{i=1}^{p'} \alpha_i L^i\right) X_t=\left(1 + \sum_{i=1}^q \theta_i L^i\right) \varepsilon_t
+\end{equation}
+
+Assumindo que o polinômio $\left( 1 - \sum_{i=1}^{p'} \alpha_i L^i \right)$ possui uma raiz unitária como um fator de  $(1-L)$ de multiplicidade $d$, então a Equação \ref{eq:arma_model_L} pode ser reescrita como \ref{eq:arma_model_Ld}.
+
+\begin{equation}
+\label{eq:arma_model_Ld}
+    \left(1 - \sum_{i=1}^{p'} \alpha_i L^i\right)=\left(1 - \sum_{i=1}^{p'-d} \varphi_i L^i\right)\left(1 - L \right)^d
+\end{equation}
+
+O modelo ARIMA$(p,d,q)$ é uma derivação do modelo ARMA ao expressar a fatoração polinomial mostrada anteriormente, definindo $p=p^{'} - d$, o que leva a equação \ref{eq:arima_model}.
+
+\begin{equation}
+\label{eq:arima_model}
+    \left( 1 - \sum_{i=1}^p \varphi_i L^i \right) (1-L)^d X_t = \left( 1 + \sum_{i=1}^q \theta_i L^i \right) \varepsilon_t \
+\end{equation}
+
+A equação \ref{eq:arima_model} pode ser ainda simplificada da forma \ref{eq:arima_model_simple}, esta simplificação ajuda a na modelagem SARIMAX que seguirá na próxima seção \ref{subsec:sarimax}.
+
+\begin{equation}
+\label{eq:arima_model_simple}
+    \Phi_p(L)(1-L)^d X_t = c + \Theta_q(L)\Epsilon_t \
+\end{equation}
+
+A teoria dos modelos ARIMA teve sua ampla aplicação por conta dos esforços dos trabalhos de Box et al. \cite{box2011time}, que desenvolveu um método sistemático, iterativo e prático de construção de modelos \cite{ramos2015performance}, dividido em três etapas, identificação do modelo, estimativa de parâmetro e diagnóstico do modelo.
+
+\subsection{SARIMAX}
+\label{subsec:sarimax}
+
+
+
+\section{Métricas de Performance}
+
+\subsection{AIC}
 
 \subsection{MAPE}
 
 \subsection{MAE}
 
-\subsection{AIC}
+\subsection{MSE}
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

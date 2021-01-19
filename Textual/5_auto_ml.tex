@@ -1,15 +1,15 @@
 \chapter{Auto ML e Modelos Propostos}
-\label{cap:mod_props}
-
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
+\label{cap:5_auto_ml}
 
 \section{Meta-heurísticas}
 
 \subsection{ACO}
 
-Cada formiga precisa construir uma solução para se mover pelo gráfico. Para selecionar a próxima aresta em seu passeio, uma formiga irá considerar o comprimento de cada aresta disponível a partir de sua posição atual, bem como o nível de feromônio correspondente. Em cada etapa do algoritmo, cada formiga se move de um estado $\textit{x}$ para um outro $\textit{y}$, correspondendo a uma solução intermediária mais completa. A partir disto, cada formiga $k$ calcula um grupo $A_{k}(x)$ de passeios movimentos factíveis a partir da sua posição atual para cada iteração, a formiga se move então para um desses novos estados possíveis de acordo com a probabilidade. Para a formiga $k$, a probabilidade $p_{xy}^{k}$ de se mover do estado $x$ para o estado $y$ depende da combinação de dois valores, a atratividade $\eta _{xy}$ dessa mudança, alguma heurística indicando a conveniência a priori desse movimento e a quantidade de feromônio depositada na trilha $\tau _{xy}$, indicando o quão proficiente ele foi no passado para fazer aquele movimento específico. O nível da trilha representa a posteriori uma indicação da conveniência desse movimento.
+Se trata de um algoritmo de mete-heurístico formulado no anos 90 \cite{dorigo1999ant} no intuito de solucionar problemas de combinatoriais de larga escala. O algoritmo se baseia no comportamento de formigas em busca de alimento \cite{dorigo2006ant}. Uma forma mais simples de visualizar a movimentação dos agentes é a partir da teoria de grafos.
+
+Cada formiga precisa construir uma solução para se mover pelo grafo. Para selecionar a próxima aresta em seu passeio, uma formiga irá considerar o comprimento de cada aresta disponível a partir de sua posição atual, bem como o nível de feromônio correspondente.
+
+Em cada etapa do algoritmo, cada formiga se move de um estado $\textit{x}$ para um outro $\textit{y}$, correspondendo a uma solução intermediária mais completa. A partir disto, cada formiga $k$ calcula um grupo $A_{k}(x)$ de passeios movimentos factíveis a partir da sua posição atual para cada iteração, a formiga se move então para um desses novos estados possíveis de acordo com a probabilidade. Para a formiga $k$, a probabilidade $p_{xy}^{k}$ de se mover do estado $x$ para o estado $y$ depende da combinação de dois valores, a atratividade $\eta _{xy}$ dessa mudança, alguma heurística indicando a conveniência a priori desse movimento e a quantidade de feromônio depositada na trilha $\tau _{xy}$, indicando o quão proficiente ele foi no passado para fazer aquele movimento específico. O nível da trilha representa a posteriori uma indicação da conveniência desse movimento.
 
 Por fim cada formiga $k$ se move entre os estados $x$ e $y$ com uma probabilidade conforme a equação \ref{eq:aco_prob}.
 
@@ -78,7 +78,7 @@ Nesta seção será explicada a forma geral de correção do resíduo, dado pelo
 Como pode ser visto, existem 4 cromossomos que são utilizados na busca por algoritmo genético. As variáveis do tipo \textit{Lags} se tratam de quantidades de amostrados do passado utilizadas para prever o futuro. Cada um dos cromossomos será melhor explicado abaixo:
 
 \begin{itemize}
-    \item C1: \textit{Lags} para modelar resíduo - De posse do resíduo, estas amostras são utilizadas no Modelo do Resíduo, que se trata de um objeto que também é obtido a partir de busca com algoritmo genético.
+    \item C1: \textit{Lags} para Modelar Resíduo - De posse do resíduo, estas amostras são utilizadas no Modelo do Resíduo, que se trata de um objeto que também é obtido a partir de busca com algoritmo genético.
     
     \item C2: \textit{Lags} SARIMAX - De posse do Modelo Linear SARIMAX é possível obter amostras do passado da série temporal gerada por estes. Essas amostras serão utilizadas na Combinação com Amostras C3 e C4 do Resíduo Modelado.
     
@@ -89,7 +89,7 @@ Como pode ser visto, existem 4 cromossomos que são utilizados na busca por algo
 
 Os cromossomos C1-C4 são inicializados como números inteiros de uma distribuição uniforme de limite inferior 1 e superior 20. Foi estipulado uma probabilidade de mutação e cruzamento de 80\%.
 
-\begin{algorithm}[!htp]
+\begin{algorithm}[!tp]
     \Entrada{população, Prob. Cruzamento}
     \Saida{Nova população}
     \Inicio{
@@ -107,11 +107,7 @@ Os cromossomos C1-C4 são inicializados como números inteiros de uma distribui�
     \label{algo:cap5_cruz_hibrid}
 \end{algorithm}
 
-O operador de cruzamento funciona de acordo com o Algoritmo \ref{algo:cap5_cruz_hibrid}. Os indivíduos são colocados em ordem do melhor \textit{fitness} ao pior, então o melhor indivíduo sempre é levado para a próxima população. Em seguida, para cada um dos indivíduos restantes, é definido aleatoriamente um conjunto dos quatro cromossomos que serão recebidos de um indivíduo de melhor posição, esta que é dada pela posição do individuo simetricamente. A mutação dos cromossomos se dá a partir da variação da adição de um número inteiro obtido por uma distribuição uniforme entre -2 e 2.
-
-Ainda sobre o processo representado pela Figura \ref{fig:cap5_fluxograma_cromossomo}, é necessário explicar exatamente como as variáveis dos cromossomos são necessárias pela modelagem, esta explicação se dá melhor na Figura \ref{fig:cap5_fluxograma_modelos_res_comb}. A segunda etapa do processo é dada pelo Modelo do Resíduo e a terceira, pelo Modelo de Combinação. Em ambas estas etapas, podem ser utilizados quaisquer algoritmos de regressão para que com base nos dados de treino, se gere estes dois modelos e com dados de teste se avalie. 
-
-\begin{figure}[htbp]
+\begin{figure}[!bp]
     \centering
     \caption{Fluxograma detalhado sobre requisitos do Modelo do Resíduo e Modelo de Combinação não Linear.}
     \includegraphics[width=\textwidth]{Figuras/cap5/fluxograma_modelos_res_comb.jpg}
@@ -119,30 +115,60 @@ Ainda sobre o processo representado pela Figura \ref{fig:cap5_fluxograma_cromoss
     \label{fig:cap5_fluxograma_modelos_res_comb}
 \end{figure}
 
+O operador de cruzamento funciona de acordo com o Algoritmo \ref{algo:cap5_cruz_hibrid}. Os indivíduos são colocados em ordem do melhor \textit{fitness} ao pior, então o melhor indivíduo sempre é levado para a próxima população. Em seguida, para cada um dos indivíduos restantes, é definido aleatoriamente um conjunto dos quatro cromossomos que serão recebidos de um indivíduo de melhor posição, esta que é dada pela posição do individuo simetricamente. A mutação dos cromossomos se dá a partir da variação da adição de um número inteiro obtido por uma distribuição uniforme entre -2 e 2.
+
+Ainda sobre o processo representado pela Figura \ref{fig:cap5_fluxograma_cromossomo}, é necessário explicar exatamente como as variáveis dos cromossomos são necessárias pela modelagem, esta explicação se dá melhor na Figura \ref{fig:cap5_fluxograma_modelos_res_comb}. A segunda etapa do processo é dada pelo Modelo do Resíduo e a terceira, pelo Modelo de Combinação. Em ambas estas etapas, podem ser utilizados quaisquer algoritmos de regressão para que com base nos dados de treino, se gere estes dois modelos e com dados de teste se avalie.
+
 Neste trabalho para as etapas 2, Modelo do Resíduo e 3, Modelo de Combinação, podem ser escolhidos dois algoritmos de hiper-parametrização de MLPs, baseados em algoritmo genético, descritos nas próximas subseções \ref{subsec:ag-mlp} e \ref{subsec:ag-mlp-vr}.
 
 \subsection{AG-MLP}
 \label{subsec:ag-mlp}
 
-Para obter a MLP bem parametrizada o algoritmo procura os melhores parâmetros para o MLP. Nesta busca, o algoritmo gera uma população de MLPs, com parâmetros aleatórios, avalia estes e ranqueia o melhores parâmetros. Depois disso, uma nova população é gerada, após um cruzamento entre melhores e piores MLPs. A melhor MLP é repetida na próxima geração. Depois do cruzamento, os parâmetros numéricos sofrem mutação. Esta nova população é re-avaliada e o ciclo continua.
+Para obter a MLP bem parametrizada o algoritmo procura os melhores parâmetros para o MLP. Este tipo de otimização pode ser encontrado na literatura, sendo muito útil para aumentar a performance deste tipo de RNA \cite{ramchoun2016multilayer, idrissi2016genetic} . Nesta busca, o algoritmo gera uma população de MLPs, com parâmetros aleatórios, avalia estes e ranqueia o melhores parâmetros. Depois disso, uma nova população é gerada, após um cruzamento entre melhores e piores MLPs. A melhor MLP é repetida na próxima geração. Depois do cruzamento, os parâmetros numéricos sofrem mutação. Esta nova população é re-avaliada e o ciclo continua.
 
-Para todas as séries foi estipulado 80\% de dados para treino, que são utilizados para realizar o treinamento do algoritmo de otimização e hibridização, bem como todas as MLPs e 20\% para teste, que utilizado para avaliação do modelo híbrido final.
+O algoritmo busca para cada MLP baseado nos cromossomos mostrados na Figura \ref{fig:cap5_cromo_mlp}. Para implementação das MLP é utilizada a biblioteca Scikit-learn do python \cite{scikit-learn}. É definido uma quantidade máxima de iterações em 500. Mais detalhadamente, cada um dos cromossomos tem as seguintes características:
 
-O algoritmo evolucionário escolhido não leva em consideração a variabilidade implícita de treinamento de MLPs, entretanto este foi programado de forma a salvar a cada geração os modelos com os pesos treinados, não apenas as topologias.
+\begin{figure}[bp]
+    \centering
+    \caption{Cromossomos do Algoritmo Genético da MLP.}
+    \includegraphics[width=\textwidth]{Figuras/cap5/cromo_mlp.jpg}
+    \source{Autor.}
+    \label{fig:cap5_cromo_mlp}
+\end{figure}
 
-Cada MLP utilizada no modelo híbrido proposto tem características como mostrado a seguir:
 \begin{itemize}
-    \item Função de Ativação {identidade, logística, tangente hiperbólica,
-relu}
-    \item Atualização da Taxa de Aprendizagem {constante, invscaling,
-adaptativa}
-    \item otimizador
-    \item quantidade de neurônios nas camada escondida
+    \item MLP-C1: \textit{Solver} - Se trata do algoritmo de optimização utilizado para obter os pesos nos neurônios. Pode ser escolhido entre LBFGS, ADAM e SGD. 
+    
+    \item MLP-C2 à MLP-C4: Quantidade de neurônios nas camada escondida 1, 2 e 3.
+    
+    \item MLP-C5: Função de Ativação - Possibilidade dentre as funções Identidade, Logística, Tangente Hiperbólica e Relu.
+    
+    \item MLP-C6: \textit{Learning Rate} - Se trata da forma que a Taxa de Aprendizagem $\eta$ da MLP é atualizada. Pode ser escolhida entre Constante, \textit{Invscaling} e Adaptativa.
+    
 \end{itemize}
+
+Sobre o cromossomo \textit{Solver}, LBFGS é um acrônimo para \textit{Limited\hyp{}Memory Broyden\hyp{}Fletcher\hyp{}Goldfarb\hyp{}Shanno Algorithm} que tende a ser mais rápido que o o algoritmo SGD, acrônimo de \textit{Stochastic Gradient Descendent} \cite{le2011optimization}. No caso de uso do SGD o momento é defidno em 0.9. ADAM, cujo nome é um derivativo de \textit{Adaptative Moment Estimation}, se trata de um algoritmo cronologicamente mais novo que os anteriores e popular em aplicações envolvendo \textit{Deep Learning} \cite{kingma2014adam, yi2020effective, jais2019adam}.
+
+Sobre o \textit{Learning Rate}, mais detalhadamente cada uma das possibilidades é caracterizada da seguinte forma: Constante é uma taxa de aprendizagem $\eta=0,001$. \textit{Invscaling} diminui gradualmente a taxa de aprendizagem periodicamente, com período $t$ usando um expoente de escala inversa como na Equação \ref{eq:learning_rate_invscaling}. A taxa de aprendizado Adaptativa mantém a taxa de aprendizagem constante enquanto a perda de treinamento continua diminuindo. Cada vez que duas épocas consecutivas falham em diminuir a perda de treinamento em pelo menos $0,0001$, ou falham em aumentar a pontuação de validação em pelo menos $0,0001$, a taxa de aprendizado atual é dividida por 5.
+
+\begin{equation}
+\label{eq:learning_rate_invscaling}
+    \begin{gathered}
+    \eta = \eta \slash t^{0.5}
+    \end{gathered}
+\end{equation}
 
 \subsection{AG-MLP Voting Regressor}
 \label{subsec:ag-mlp-vr}
 
-Este modelo é análogo ao anterior, porém com a diferença que ao invés de se escolher uma rede neural melhor para cada um 
+Este modelo é análogo ao da Seção \ref{subsec:ag-mlp} precedente, na utilização de MLPs como elementos principais, porém com a diferença que ao invés de se escolher uma RNA apenas para o Modelo do Resíduo e Modelo de Combinação, são escolhidas as melhores RNA de forma a ser feita uma média na predição entre as melhores. Este mecanismo é chamado de \textit{Voting Regressor}. 
+
+Para a implementação correta deste algoritmo, é adicionado um cromossomo a mais C5 aqueles que foram explicados e ilustrados na Figura \ref{fig:cap5_fluxograma_cromossomo}. 
+
+\begin{itemize}
+    \item C5: Percentagem de MLPs que farão parte do \textit{Voting Regressor}.
+\end{itemize}
+
+O cromossomo C5 tem cruzamento equivalente ao demonstrado pelo Algoritmo \ref{algo:cap5_cruz_hibrid}, porém sua mutação dá a partir da variação da adição de um número inteiro obtido por uma distribuição uniforme entre -10 e 10. 
 
 %\subsection{Voting Regressor Ensembles}

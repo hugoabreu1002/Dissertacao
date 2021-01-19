@@ -1,7 +1,3 @@
-%%% USE UM DOS DOIS: %%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%\usepackage[cp1252]{inputenc}
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage[pdftex]{graphics}
@@ -11,19 +7,10 @@
 \usepackage[tableposition=top]{caption}
 \newcommand{\source}[1]{\caption*{Fonte: {#1}}}
 \usepackage{svg}
-%\usepackage{floatrow}
-%\usepackage{float}
-%\floatstyle{plaintop}
-%\restylefloat{table}
-
 \usepackage{rotating}
 \usepackage[utf8]{inputenc}
 \usepackage[paper=portrait,pagesize]{typearea}
-%\usepackage{titlesec}
-%\setcounter{secnumdepth}{4}
-%\setcounter{tocdepth}{4}
 
-%\usepackage[latin1]{inputenc}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \usepackage[T1]{fontenc}
@@ -57,25 +44,29 @@
 \usepackage[portuguese,portuguesekw,ruled,lined]{algorithm2e}
 
 %Extra
-%\usepackage{calligra}                           % Fonte caligr\'{a}fica
-%\usepackage{suetterl}                           % Fonte caligr\'{a}fica
-\usepackage[utopia]{quotchap}                   % Formata\c{c}\~{a}o para cap\'{\i}tulos
+%\usepackage{calligra}          % Fonte caligr\'{a}fica
+%\usepackage{suetterl}          % Fonte caligr\'{a}fica
+\usepackage[utopia]{quotchap}   % Formata\c{c}\~{a}o para cap\'{\i}tulos
 \usepackage{IEEEtrantools_mod}
 \usepackage{lscape}
 
 
 \usepackage[notintoc,portuguese]{nomencl}
 \makenomenclature
-
-%\usepackage[dvips]{hyperref}
 \usepackage{lastpage}
 \usepackage{setspace}
 \pagestyle{plain}
 \usepackage{cite}
-%\usepackage[sort&compress,square]{natbib}
-%\usepackage[font=small,labelfont=bf]{caption}
 \usepackage{color}
 \usepackage{amssymb}
+\usepackage{hyphenat}
+
+%%%%%%%%%%%%% Margens %%%%%%%%%%%%
+
+\geometry{a4paper,left=3cm,right=2cm,top=3cm,bottom=2cm}
+
+
+%%%%%%%%%%%%% Outras %%%%%%%%%%%%
 
 %\hypersetup{backref,%
 %            pdfpagemode=FullScreen,%
@@ -88,10 +79,6 @@
             %breaklinks=true, %
             %linktocpage=true
             %}%
-
-%%%%%%%%%%%%% Margens %%%%%%%%%%%%
-
-\geometry{a4paper,left=3cm,right=2cm,top=3cm,bottom=2cm}
 
 %\geometry{hmargin={3cm,2cm},vmargin={3cm,2cm}}
 
