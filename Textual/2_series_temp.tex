@@ -26,14 +26,14 @@ Uma outra forma de descrever o modelo ARMA é obtida ao se utilizar o operador $
     \left(1 - \sum_{i=1}^{p'} \alpha_i L^i\right) X_t=\left(1 + \sum_{i=1}^q \theta_i L^i\right) \varepsilon_t
 \end{equation}
 
-Assumindo que o polinômio $\left( 1 - \sum_{i=1}^{p'} \alpha_i L^i \right)$ possui uma raiz unitária como um fator de  $(1-L)$ de multiplicidade $d$, então a Equação \ref{eq:arma_model_L} pode ser reescrita como \ref{eq:arma_model_Ld}.
+Assumindo que o polinômio $\left( 1 - \sum_{i=1}^{p'} \alpha_i L^i \right)$ possui uma raiz unitária como um fator de  $(1-L)$ de multiplicidade $d$, então a Equação \ref{eq:arma_model_L} pode ser reescrita como \ref{eq:arma_model_alpta2phi}.
 
 \begin{equation}
-\label{eq:arma_model_Ld}
+\label{eq:arma_model_alpta2phi}
     \left(1 - \sum_{i=1}^{p'} \alpha_i L^i\right)=\left(1 - \sum_{i=1}^{p'-d} \varphi_i L^i\right)\left(1 - L \right)^d
 \end{equation}
 
-O modelo ARIMA$(p,d,q)$ é uma derivação do modelo ARMA ao expressar a fatoração polinomial mostrada anteriormente, definindo $p=p^{'} - d$, o que leva a equação \ref{eq:arima_model}.
+O modelo ARIMA$(p,d,q)$ é uma derivação do modelo ARMA ao expressar a fatoração polinomial mostrada anteriormente, substituindo \ref{eq:arma_model_alpta2phi} em \ref{eq:arma_model_L} e definindo $p=p^{'} - d$, o que leva a equação \ref{eq:arima_model}.
 
 \begin{equation}
 \label{eq:arima_model}
@@ -44,15 +44,26 @@ A equação \ref{eq:arima_model} pode ser ainda simplificada da forma \ref{eq:ar
 
 \begin{equation}
 \label{eq:arima_model_simple}
-    \Phi_p(L)(1-L)^d X_t = c + \Theta_q(L)\Epsilon_t \
+    \phi_p(L)(1-L)^d X_t = c + \theta_q(L)\varepsilon_t
 \end{equation}
+
+Em que, $\phi_p(L)$ se torna o termo auto regressivo de ordem $p$, $c$ é uma constante e $\theta_q(L)\varepsilon_t$ o termo de médias móveis de ordem $q$, $d$ é a ordem de diferenciação. 
 
 A teoria dos modelos ARIMA teve sua ampla aplicação por conta dos esforços dos trabalhos de Box et al. \cite{box2011time}, que desenvolveu um método sistemático, iterativo e prático de construção de modelos \cite{ramos2015performance}, dividido em três etapas, identificação do modelo, estimativa de parâmetro e diagnóstico do modelo.
 
 \subsection{SARIMAX}
 \label{subsec:sarimax}
 
+A partir da equação \ref{eq:arima_model_simple} que descreve um modelo ARIMA não sazonal é possível chegar a modelagem SARIMAX, que leva em conta a sazonalidade e também variáveis exógenas. Primeiramente, o modelo SARIMA, que leva em consideração apenas a sazonalidade é representado pela equação \cite{arunraj2016application, de2018modelo}
 
+\begin{equation}
+\label{eq:sarima_model}
+    \phi_p(L)\Phi_P(L^S)(1-L)^d(1-L^S)^D X_t = c + \theta_q(L)\Theta_Q(L^S)\varepsilon_t
+\end{equation}
+
+Em que, $\Phi_P(L^S)$ se torna o termo auto regressivo sazonal de ordem $P$, $S$ é a frequência de sazonalidade, deve ser 12 para dados mensais e 24 para dados horários. $D$ é a quantidade de diferenciações para a parte sazonal do modelo e $\Theta_Q(L^S)$ se trata do termo de médias móveis sazonal.
+
+O modelo SARIMA tem capacidade de lidar séries temporais estacionárias e não estacionárias com elementos sazonais \cite{arunraj2016application}. Com base no comportamento das séries temporais, dados exógenos podem ter potencial impacto em melhorar as estimativas do modelo. Portanto, é importante considerar variáveis externas, que fornecem respostas significativas para os dados remotos. O modelo que lida com variáveis externas é chamado SARIMAX. 
 
 \section{Métricas de Performance}
 
