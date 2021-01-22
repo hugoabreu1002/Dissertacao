@@ -63,18 +63,42 @@ A partir da equação \ref{eq:arima_model_simple} que descreve um modelo ARIMA n
 
 Em que, $\Phi_P(L^S)$ se torna o termo auto regressivo sazonal de ordem $P$, $S$ é a frequência de sazonalidade, deve ser 12 para dados mensais e 24 para dados horários. $D$ é a quantidade de diferenciações para a parte sazonal do modelo e $\Theta_Q(L^S)$ se trata do termo de médias móveis sazonal.
 
-O modelo SARIMA tem capacidade de lidar séries temporais estacionárias e não estacionárias com elementos sazonais \cite{arunraj2016application}. Com base no comportamento das séries temporais, dados exógenos podem ter potencial impacto em melhorar as estimativas do modelo. Portanto, é importante considerar variáveis externas, que fornecem respostas significativas para os dados remotos. O modelo que lida com variáveis externas é chamado SARIMAX. 
+O modelo SARIMA tem capacidade de lidar séries temporais estacionárias e não estacionárias com elementos sazonais \cite{arunraj2016application}. Com base no comportamento das séries temporais, dados exógenos podem ter potencial impacto em melhorar as estimativas do modelo. Portanto, é importante considerar variáveis externas, que fornecem respostas significativas para os dados remotos. O modelo que lida com variáveis externas é chamado SARIMAX. Neste modelo, variáveis exógenas $X_t$ podem ser modeladas com uma regressão linear múltipla \cite{arunraj2016application,  elamin2018modeling}, com pesos $\beta$. O termo $w_t$ trata da série residual restante e pode ser representado a partir do modelo SARIMA, como mostra a equação \ref{eq:sarimax_model}.
+
+\begin{equation}
+\label{eq:sarimax_model}
+    \begin{gathered}
+        Z_t = c + \beta X_t +w_t\\
+        w_t = \frac{\theta_q(L)\Theta_Q(L^S)}{ \phi_p(L)\Phi_P(L^S)(1-L)^d(1-L^S)^D}\varepsilon_t
+    \end{gathered}
+\end{equation}
 
 \section{Métricas de Performance}
 
-\subsection{AIC}
+As métricas de performance são necessárias para identificar se os modelos se comportam de melhor forma. As métricas que serão apresentadas a seguir são comumente utilizadas seja para zerar e otimizar um modelo ARIMA/SARIMAX, como no caso do AIC, como para comparar modelagens híbridas, no caso de MAPE, MAE e RMSE.
 
-\subsection{MAPE}
+O critério de Akaike (AIC) estima a perda de informação quando uma distribuição de probabilidade $f$ associada aos dados reais é aproximada por uma distribuição de probabilidade $g$, obtida a partir de algum modelo. A medida de discrepância entre $f$ e $g$ $I(f,g)$ é igual a medida de informação de Kullback–Leibler \cite{wagenmakers2004aic}.
 
-\subsection{MAE}
+Por fim é definido como na equação \ref{eq:aic}, em que $L$ é o modelo candidato com máxima verossimilhança, determinado a partir de ajustes de $k$, que são parâmetros do modelo, de uma forma que seja maximizada a probabilidade de que $f$ seja equivalente $g$ \cite{wagenmakers2004aic}.
 
-\subsection{MSE}
+\begin{equation}
+\label{eq:aic}
+    AIC = 2k - 2\ln(\hat L)
+\end{equation}
 
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
+As métrica MAPE, MAE e RMSE, dadas pelas equações \ref{eq:MAPE} \ref{eq:MAE} \ref{eq:RMSE}, respectivamente, são utilizadas para avaliar as previsões dos modelos. 
+
+\begin{equation}
+\label{eq:MAPE}
+    MAPE = \frac{1}{n}\sum_{t=1}^{n} \frac{|Y_t - \hat{Y_t}|}{Y_t}
+\end{equation}
+
+\begin{equation}
+\label{eq:MAE}
+    MAE = \frac{1}{n}\sum_{t=1}^{n} |Y_t - \hat{Y_t}|
+\end{equation}
+
+\begin{equation}
+\label{eq:RMSE}
+    RMSE = \sqrt{\frac{1}{n}\sum_{t=1}^{n} |Y_t - \hat{Y_t}|^2}
+\end{equation}
