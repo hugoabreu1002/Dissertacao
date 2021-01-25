@@ -1,6 +1,6 @@
-# Dissertacao
+# Dissertação
 
-minha dissertacao de mestrado
+minha dissertação de mestrado
 
 ## Qualificação 
 

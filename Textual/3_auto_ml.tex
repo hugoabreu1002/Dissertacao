@@ -1,5 +1,5 @@
 \chapter{Auto ML e Modelos Propostos}
-\label{cap:5_auto_ml}
+\label{cap:auto_ml}
 
 \section{Meta-heurísticas}
 
@@ -58,10 +58,11 @@ Em que $v_i^k$ é a velocidade de cada partícula $i$ na iteração $k$, $x_i^{k
 
 \subsection{Auto ARIMA versus SARIMAX ACO-PSO Search}
 
-% falar aqui da necessidade de se pensar um algortimo que busque entre
-% as variáveis exógenas e que busque outras possibilidades de frequências.
-% essa é a diferença entre o autoarima. Não vale a pena comparar só com o ACO ou 
-% só com o PSO. Explicar que só o PSO ou só o ACO dá problema de memória.
+A metodologia de Box-Jenkins \cite{hipel1977advances} para determinar um modelo ARIMA ainda é muito utilizada, para isto as funções ACF e PACF vem a uso para identificar qual o grau de auto-dependência da serie temporal,identificar se esta não é estacionária e também enxergar se há uma sazonalidade implícita. Em casos de não estacionariedade é feita uma diferenciação numéria. \cite{hipel1977advances,atique2019forecasting, hyndman2020forecasting}.
+
+Com uso do testes estatísticos de estacionariedade como KPPS (Kwiatkowski\hyp{}Phillips\hyp{}Schmidt\hyp{}Shin) \cite{kwiatkowski1992testing} e ADF (\textit{Augmented} Dickey\hyp{}Fuller) \cite{dickey1979distribution} é possível automatizar a avaliação da estacionariedade. Adicionando-se as informações dados pela ACF, PACF e pela métrica AIC é possível então criar algoritmos para modelagem automática de séries temporais.
+
+Um dos algoritmos mais populares, implementado tanto na linguagem R, quanto em python \cite{smith2017pmdarima}, que automatizam o processo de obtenção de um modelo ARIMA é conhecido pelo trabalho de Hyndman-Khandakar intitulado \textbf{auto ARIMA} \cite{hyndman2007automatic, hyndman2020forecasting} utiliza de uma metodologia de busca para encontrar os parâmetros (p, d, q) e (P, D, Q, S) para um modelo SARIMA, neste caso a frequência de sazonalidade, indicada pelo parâmetro S é indicada pelo usuário \cite{hyndman2007automatic, smith2017pmdarima}. Também é possível adicionar variáveis exógenas ao \textbf{auto ARIMA}, completando assim um modelo SARIMAX.
 
 \section{Modelos Híbridos por Correção de Resíduo}
 

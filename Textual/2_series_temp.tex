@@ -102,3 +102,35 @@ As métrica MAPE, MAE e RMSE, dadas pelas equações \ref{eq:MAPE} \ref{eq:MAE} 
 \label{eq:RMSE}
     RMSE = \sqrt{\frac{1}{n}\sum_{t=1}^{n} |Y_t - \hat{Y_t}|^2}
 \end{equation}
+
+\section{Dados Utilizados} 
+\label{cap:dados_prep}
+
+\subsection{Origem}
+
+O Instituto Nacional de Meteorologia disponibiliza dados a partir de diversas estações espalhadas pelo país através de seu Banco de Dados Meteorológicos (BDMEP) \cite{INMET}.
+
+Os dados são adquiridos a partir de estações de medição, havendo as automáticas e as convencionais, estas últimas estão sendo descontinuadas \cite{lima2020comparaccao}. Utilizando os dados do INMET e outras fontes de dados abertos é possível obter criar modelos de interpolação espacial e predição de temporal \cite{mendes2020integraccao}.
+
+Os dados foram obtidos pelo período entre 2008 e 2020, entretanto são trabalhados apenas os dados horários dos últimos 365 dias. Entre os dados presentes, se encontram séries temporais horárias das seguintes variáveis:
+
+\begin{enumerate}
+    \item Radiação Global (W/m\textsuperscript{2})
+    \item Pressão Atmosférica, máxima e mínima (mb)
+    \item \textbf{Precipitação Total} (mm)
+    \item \textbf{Temperatura do Ar em Bulbo Seco} (\textdegree{}C)
+    \item Temperatura máxima, mínima e de Ponto de Orvalho (\textdegree{}C)
+    \item \textbf{Umidade Relativa}, máxima e mínima (\%)
+    \item \textbf{Velocidade do Vento e em rajada} (m/s)
+    \item Direção do vento (graus)
+\end{enumerate}
+
+Estando destacadas as variáveis disponíveis escolhidas como variáveis exógenas para previsão temporal da radiação.
+
+\subsection{Pré-processamento}
+
+Neste trabalho os dados serão utilizados para previsão de séries temporais utilizando os modelos discutidos no capítulo \ref{cap:auto_ml}, desenvolvidos para melhorar a performance de modelos lineares do capítulo \ref{cap:series_temp}. Para isto, é preciso fazer um tratamento inicial na base de dados oriunda do INMET, este tratamento visa adequar as variáveis aos modelos. 
+
+Normalmente, dados obtidos por fontes externas nem sempre estão 100\% corretos, um dos problemas comuns é a presença de lixo, dados vazios ou formato inadequado. No caso dos dados trabalhados do INMET, foi necessário fazer a adequação de formato e complementação de dados faltantes. Além disto, os dados foram trabalhados em escala entre 0 e 1, para isto é feita a divisão pelo máximo valor encontrado na base, para cada variável. No fim da previsão é possível retornar a escala original.
+
+A complementação de dados faltantes se dá a partir do método chamado \textit{forward fill}, que significa que o último valor válido observado é utilizado para substituir valores vazios de cada variável.
