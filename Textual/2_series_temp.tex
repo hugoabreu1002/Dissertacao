@@ -79,11 +79,18 @@ As métricas de performance são necessárias para identificar se os modelos se 
 
 O critério de Akaike (AIC) estima a perda de informação quando uma distribuição de probabilidade $f$ associada aos dados reais é aproximada por uma distribuição de probabilidade $g$, obtida a partir de algum modelo. A medida de discrepância entre $f$ e $g$ $I(f,g)$ é igual a medida de informação de Kullback–Leibler \cite{wagenmakers2004aic}.
 
-Por fim é definido como na equação \ref{eq:aic}, em que $L$ é o modelo candidato com máxima verossimilhança, determinado a partir de ajustes de $k$, que são parâmetros do modelo, de uma forma que seja maximizada a probabilidade de que $f$ seja equivalente $g$ \cite{wagenmakers2004aic}.
+Por fim é definido como na equação \ref{eq:aic}, em que $L$ é o modelo candidato com máxima verossimilhança, determinado a partir de ajustes de $k$, que é o número de parâmetros do modelo, de uma forma que seja maximizada a probabilidade de que $f$ seja equivalente $g$ \cite{wagenmakers2004aic}.
 
 \begin{equation}
 \label{eq:aic}
     AIC = 2k - 2\ln(\hat L)
+\end{equation}
+
+A métrica AIC não é boa para um número pequeno de amostras, para isto foi formulada a métrica AICc, que seria a versão corrigida \cite{hurvich1989regression}. Na equação \ref{eq:aicc} abaixo AICc é dado pela correção de AIC por um termo, dependente de $k$ e $n$, sendo $n$ a quantidade de amostras. Se $n \to \infty$ o termo adicional zera, e AICc tende a AIC. 
+
+\begin{equation}
+\label{eq:aicc}
+    AICc = AIC + \frac{2(k+1)(k+2)}{n - k -2}
 \end{equation}
 
 As métrica MAPE, MAE e RMSE, dadas pelas equações \ref{eq:MAPE} \ref{eq:MAE} \ref{eq:RMSE}, respectivamente, são utilizadas para avaliar as previsões dos modelos. 

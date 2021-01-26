@@ -60,9 +60,62 @@ Em que $v_i^k$ é a velocidade de cada partícula $i$ na iteração $k$, $x_i^{k
 
 A metodologia de Box-Jenkins \cite{hipel1977advances} para determinar um modelo ARIMA ainda é muito utilizada, para isto as funções ACF e PACF vem a uso para identificar qual o grau de auto-dependência da serie temporal,identificar se esta não é estacionária e também enxergar se há uma sazonalidade implícita. Em casos de não estacionariedade é feita uma diferenciação numéria. \cite{hipel1977advances,atique2019forecasting, hyndman2020forecasting}.
 
-Com uso do testes estatísticos de estacionariedade como KPPS (Kwiatkowski\hyp{}Phillips\hyp{}Schmidt\hyp{}Shin) \cite{kwiatkowski1992testing} e ADF (\textit{Augmented} Dickey\hyp{}Fuller) \cite{dickey1979distribution} é possível automatizar a avaliação da estacionariedade. Adicionando-se as informações dados pela ACF, PACF e pela métrica AIC é possível então criar algoritmos para modelagem automática de séries temporais.
+Com uso do testes estatísticos de estacionariedade como KPPS (Kwiatkowski\hyp{}Phillips\hyp{}Schmidt\hyp{}Shin) \cite{kwiatkowski1992testing} e ADF (\textit{Augmented} Dickey\hyp{}Fuller) \cite{dickey1979distribution} é possível automatizar a avaliação da estacionariedade. Para séries com perfil sazonal um teste muito utilizado se trata do de Canova-Hansen \cite{canova1995seasonal}. Adicionando-se as informações dados pela ACF, PACF e pela métrica AIC é possível então criar algoritmos para modelagem automática de séries temporais.
 
-Um dos algoritmos mais populares, implementado tanto na linguagem R, quanto em python \cite{smith2017pmdarima}, que automatizam o processo de obtenção de um modelo ARIMA é conhecido pelo trabalho de Hyndman-Khandakar intitulado \textbf{auto ARIMA} \cite{hyndman2007automatic, hyndman2020forecasting} utiliza de uma metodologia de busca para encontrar os parâmetros (p, d, q) e (P, D, Q, S) para um modelo SARIMA, neste caso a frequência de sazonalidade, indicada pelo parâmetro S é indicada pelo usuário \cite{hyndman2007automatic, smith2017pmdarima}. Também é possível adicionar variáveis exógenas ao \textbf{auto ARIMA}, completando assim um modelo SARIMAX.
+Para se obter um modelo SARIMAX bem que represente bem a série temporal de forma automática é necessário um algoritmo que realize uma busca entre as possíveis possibilidades. Um dos algoritmos mais populares, implementado tanto na linguagem R, quanto em python \cite{smith2017pmdarima}, que automatizam o processo de obtenção de um modelo ARIMA é conhecido pelo trabalho de Hyndman-Khandakar intitulado \textbf{auto ARIMA} \cite{hyndman2007automatic, hyndman2020forecasting} utiliza de uma metodologia de busca para encontrar os parâmetros (p, d, q) e (P, D, Q, S) para um modelo SARIMA, neste caso a frequência de sazonalidade, indicada pelo parâmetro S é indicada pelo usuário \cite{hyndman2007automatic, smith2017pmdarima}. Também é possível adicionar variáveis exógenas ao \textbf{auto ARIMA}, completando assim um modelo SARIMAX.
+
+O Algoritmo \ref{algo:auto_arima} abaixo descreve, de forma simplificada, como é o procedimento para obtenção deste modelo.
+
+\begin{algorithm}[!htbp]
+\Entrada{Variáveis Exógenas, Frequência Sazonal $S$, Número de Tentativas $N$}
+\Saida{Modelo SARIMAX}
+\Inicio{
+    \Enqto{Canova-Hansen}{\emph{$D++$}}
+    \Enqto{KPPS}{\emph{$d++$}}
+    
+    $BestAIC = \infty$\\
+    $N = $
+    
+    \Para{$p \leq 2$}{
+        \Para{$q \leq 2$}{
+            \Se{$p \geq 1$}{$P=1$}
+            \Se{$q \geq 1$}{$Q=1$}
+            \Se {$AIC[(p, d, q)(P, D, Q, S)] \leq BestAIC$}{
+                $BestAIC = AIC[(p, d, q)(P, D, Q, S)]$
+            }
+        }
+    }
+    
+    $C = 1$\\
+    
+    $T = 0$\\
+    
+    \Enqto{$C = 1$}{
+        $p, q, P, Q \leftarrow \pm 1$
+        
+        \Se{$AIC[(p, d, q)(P, D, Q, S)] \leq BestAIC$}{
+            
+            $BestAIC = AIC[(p, d, q)(P, D, Q, S)]$ \\
+            
+            $C = 1$ \\
+            
+            $T = 0$
+        }
+        \Senao{
+            $T ++$
+        }
+        \Se{$T \geq N$}{
+            $C = 0$
+        }
+        
+    }
+}
+    
+\caption{Algoritmo \textbf{auto ARIMA} para modelagem SARIMAX \cite{hyndman2007automatic}}
+\label{algo:auto_arima}
+\end{algorithm}
+
+Por mais que o \textbf{auto ARIMA} seja muito utilizado, ainda sim não contempla algumas possibilidades, como iteração com possibilidades diferentes de frequências de sazonalidade e escolha das melhores variáveis exógenas dentre as inseridas como entrada.
 
 \section{Modelos Híbridos por Correção de Resíduo}
 
@@ -90,7 +143,17 @@ Como pode ser visto, existem 4 cromossomos que são utilizados na busca por algo
 
 Os cromossomos C1-C4 são inicializados como números inteiros de uma distribuição uniforme de limite inferior 1 e superior 20. Foi estipulado uma probabilidade de mutação e cruzamento de 80\%.
 
-\begin{algorithm}[!tp]
+\begin{figure}[!bp]
+    \centering
+    \caption{Fluxograma detalhado sobre requisitos do Modelo do Resíduo e Modelo de Combinação não Linear.}
+    \includegraphics[width=\textwidth]{Figuras/cap5/fluxograma_modelos_res_comb.jpg}
+    \source{Autor.}
+    \label{fig:cap5_fluxograma_modelos_res_comb}
+\end{figure}
+
+O operador de cruzamento funciona de acordo com o Algoritmo \ref{algo:cap5_cruz_hibrid}. Os indivíduos são colocados em ordem do melhor \textit{fitness} ao pior, então o melhor indivíduo sempre é levado para a próxima população. Em seguida, para cada um dos indivíduos restantes, é definido aleatoriamente um conjunto dos quatro cromossomos que serão recebidos de um indivíduo de melhor posição, esta que é dada pela posição do individuo simetricamente. A mutação dos cromossomos se dá a partir da variação da adição de um número inteiro obtido por uma distribuição uniforme entre -2 e 2.
+
+\begin{algorithm}[!htbp]
     \Entrada{população, Prob. Cruzamento}
     \Saida{Nova população}
     \Inicio{
@@ -107,16 +170,6 @@ Os cromossomos C1-C4 são inicializados como números inteiros de uma distribui�
     \caption{Cruzamento escolhido para algoritmos híbridos propostos}
     \label{algo:cap5_cruz_hibrid}
 \end{algorithm}
-
-\begin{figure}[!bp]
-    \centering
-    \caption{Fluxograma detalhado sobre requisitos do Modelo do Resíduo e Modelo de Combinação não Linear.}
-    \includegraphics[width=\textwidth]{Figuras/cap5/fluxograma_modelos_res_comb.jpg}
-    \source{Autor.}
-    \label{fig:cap5_fluxograma_modelos_res_comb}
-\end{figure}
-
-O operador de cruzamento funciona de acordo com o Algoritmo \ref{algo:cap5_cruz_hibrid}. Os indivíduos são colocados em ordem do melhor \textit{fitness} ao pior, então o melhor indivíduo sempre é levado para a próxima população. Em seguida, para cada um dos indivíduos restantes, é definido aleatoriamente um conjunto dos quatro cromossomos que serão recebidos de um indivíduo de melhor posição, esta que é dada pela posição do individuo simetricamente. A mutação dos cromossomos se dá a partir da variação da adição de um número inteiro obtido por uma distribuição uniforme entre -2 e 2.
 
 Ainda sobre o processo representado pela Figura \ref{fig:cap5_fluxograma_cromossomo}, é necessário explicar exatamente como as variáveis dos cromossomos são necessárias pela modelagem, esta explicação se dá melhor na Figura \ref{fig:cap5_fluxograma_modelos_res_comb}. A segunda etapa do processo é dada pelo Modelo do Resíduo e a terceira, pelo Modelo de Combinação. Em ambas estas etapas, podem ser utilizados quaisquer algoritmos de regressão para que com base nos dados de treino, se gere estes dois modelos e com dados de teste se avalie.
 
