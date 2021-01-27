@@ -4,6 +4,7 @@
 \section{Meta-heurísticas}
 
 \subsection{ACO}
+\label{subsec:aco}
 
 Se trata de um algoritmo de mete-heurístico formulado no anos 90 \cite{dorigo1999ant} no intuito de solucionar problemas de combinatoriais de larga escala. O algoritmo se baseia no comportamento de formigas em busca de alimento \cite{dorigo2006ant}. Uma forma mais simples de visualizar a movimentação dos agentes é a partir da teoria de grafos.
 
@@ -43,6 +44,7 @@ $\rho$ é o coeficiente de evaporação de feromônio e $\Delta \tau _{xy}^{k}$ 
 \end{equation}
 
 \subsection{PSO}
+\label{subsec:pso}
 
 A otimização do enxame de partículas (PSO). É um método de otimização aleatório baseado em população que foi inspirado no comportamento de bando de pássaros ou cardume de peixes. No PSO, cada solução é um “pássaro” no espaço de busca. Chamamos isso de “partícula”. Um enxame dessas partículas se move através do espaço de busca para encontrar uma posição ideal. Cada partícula possui uma posição e uma velocidade no espaço do problema -dimensional, onde denota a ésima partícula e representa a dimensão do problema ou número de variáveis desconhecidas. O PSO é inicializado com um grupo de partículas aleatórias (soluções) e, em seguida, procura por ótimo atualizando gerações. Durante cada iteração, cada partícula é atualizada seguindo dois valores “melhores”. O primeiro é o vetor posição da melhor solução (aptidão) que esta partícula alcançou até agora. O valor de aptidão também é armazenado. Esta posição é chamada de $pbest$. Outra posição “melhor” que é rastreada pelo otimizador do enxame de partículas é a melhor posição, obtida até agora, por qualquer partícula na população. Esta melhor posição é a melhor global atual e é chamada de $gbest$. Depois de encontrar os dois melhores valores, a posição e a velocidade das partículas são atualizadas pelas duas equações \ref{eq:pso_vk} \cite{jaberipour2011particle}.
 
@@ -91,7 +93,7 @@ O Algoritmo \ref{algo:auto_arima} abaixo descreve, de forma simplificada, como �
     $T = 0$\\
     
     \Enqto{$C = 1$}{
-        $p, q, P, Q \leftarrow \pm 1$
+        $p, q, P, Q \leftarrow p, q, P, Q \pm 1$
         
         \Se{$AIC[(p, d, q)(P, D, Q, S)] \leq BestAIC$}{
             
@@ -115,18 +117,33 @@ O Algoritmo \ref{algo:auto_arima} abaixo descreve, de forma simplificada, como �
 \label{algo:auto_arima}
 \end{algorithm}
 
-Por mais que o \textbf{auto ARIMA} seja muito utilizado, ainda sim não contempla algumas possibilidades, como iteração com possibilidades diferentes de frequências de sazonalidade e escolha das melhores variáveis exógenas dentre as inseridas como entrada.
+Por mais que o \textbf{auto ARIMA} seja muito utilizado, ainda assim não contempla algumas possibilidades que poderiam levar a melhores modelos. Uma melhoria seria a realização de testes com possibilidades diferentes de frequências de sazonalidade. Outro avanço estaria em realizar uma escolha automatizada das melhores variáveis exógenas dentre as inseridas como entrada, visto que algumas variáveis exógenas podem piorar a modelagem.
+
+Para executar as melhorias propostas, pode-se inicialmente pensar em utilizar um algoritmo de busca rede, a partir de todas as possibilidades de iteração dos parâmetros (p, d, q, P, D, Q, S, X), X representado as variáveis exógenas. Entretanto, a permutação das possibilidades pode levar números altos de iterações necessárias, por exemplo, se cada um dos parâmetros tiver 3 possibilidades, levaria a 6.561 iterações.
+
+Uma forma mais inteligente de realizar esta busca seria utilizando algoritmos os meta-heurísticos descritos nas seções \ref{subsec:aco} e \ref{subsec:pso}. Ambos os algoritmos tem agentes que interagem com o ambiente ou entre si atualizar suas soluções. A geração de populações de agentes leva a uma necessidade de para Entretanto o que foi percebido é que gerar agen
+
+A Figura \ref{fig:cap3_fluxograma_sarimax} demonstra o fluxograma da procura pelo melhor modelo SARIMAX e como ele será utilizado posteriormente pelo que será descrito na próxima seção \ref{subsec:modelos_hibridos}
+
+\begin{figure}[!htbp]
+    \centering
+    \caption{Fluxograma esquemático dos modelos de correção de resíduo propostos. Os cromossomos são C1-C4. Dois modelos são gerados, um para o resíduo outro para combinar o resíduo modelado com a previsão SARIMAX.}
+    \includegraphics[width=\textwidth]{Figuras/cap3/fluxograma_sarimax.jpg}
+    \source{Autor.}
+    \label{fig:cap3_fluxograma_sarimax}
+\end{figure}
 
 \section{Modelos Híbridos por Correção de Resíduo}
+\label{subsec:modelos_hibridos}
 
-Nesta seção será explicada a forma geral de correção do resíduo, dado pelo erro entre a série temporal original e o modelo linear SARIMAX. A correção se dá a partir do fluxograma da Figura \ref{fig:cap5_fluxograma_cromossomo}. O modelo linear SARIMAX se trata da primeira etapa do processo.
+Nesta seção será explicada a forma geral de correção do resíduo, dado pelo erro entre a série temporal original e o modelo linear SARIMAX. A correção se dá a partir do fluxograma da Figura \ref{fig:cap3_fluxograma_cromossomo}. O modelo linear SARIMAX se trata da primeira etapa do processo.
 
 \begin{figure}[htbp]
     \centering
     \caption{Fluxograma esquemático dos modelos de correção de resíduo propostos. Os cromossomos são C1-C4. Dois modelos são gerados, um para o resíduo outro para combinar o resíduo modelado com a previsão SARIMAX.}
-    \includegraphics[width=\textwidth]{Figuras/cap5/fluxograma_cromossomos.jpg}
+    \includegraphics[width=\textwidth]{Figuras/cap3/fluxograma_cromossomos.jpg}
     \source{Autor.}
-    \label{fig:cap5_fluxograma_cromossomo}
+    \label{fig:cap3_fluxograma_cromossomo}
 \end{figure}
 
 Como pode ser visto, existem 4 cromossomos que são utilizados na busca por algoritmo genético. As variáveis do tipo \textit{Lags} se tratam de quantidades de amostrados do passado utilizadas para prever o futuro. Cada um dos cromossomos será melhor explicado abaixo:
@@ -146,12 +163,12 @@ Os cromossomos C1-C4 são inicializados como números inteiros de uma distribui�
 \begin{figure}[!bp]
     \centering
     \caption{Fluxograma detalhado sobre requisitos do Modelo do Resíduo e Modelo de Combinação não Linear.}
-    \includegraphics[width=\textwidth]{Figuras/cap5/fluxograma_modelos_res_comb.jpg}
+    \includegraphics[width=\textwidth]{Figuras/cap3/fluxograma_modelos_res_comb.jpg}
     \source{Autor.}
-    \label{fig:cap5_fluxograma_modelos_res_comb}
+    \label{fig:cap3_fluxograma_modelos_res_comb}
 \end{figure}
 
-O operador de cruzamento funciona de acordo com o Algoritmo \ref{algo:cap5_cruz_hibrid}. Os indivíduos são colocados em ordem do melhor \textit{fitness} ao pior, então o melhor indivíduo sempre é levado para a próxima população. Em seguida, para cada um dos indivíduos restantes, é definido aleatoriamente um conjunto dos quatro cromossomos que serão recebidos de um indivíduo de melhor posição, esta que é dada pela posição do individuo simetricamente. A mutação dos cromossomos se dá a partir da variação da adição de um número inteiro obtido por uma distribuição uniforme entre -2 e 2.
+O operador de cruzamento funciona de acordo com o Algoritmo \ref{algo:cap3_cruz_hibrid}. Os indivíduos são colocados em ordem do melhor \textit{fitness} ao pior, então o melhor indivíduo sempre é levado para a próxima população. Em seguida, para cada um dos indivíduos restantes, é definido aleatoriamente um conjunto dos quatro cromossomos que serão recebidos de um indivíduo de melhor posição, esta que é dada pela posição do individuo simetricamente. A mutação dos cromossomos se dá a partir da variação da adição de um número inteiro obtido por uma distribuição uniforme entre -2 e 2.
 
 \begin{algorithm}[!htbp]
     \Entrada{população, Prob. Cruzamento}
@@ -168,10 +185,10 @@ O operador de cruzamento funciona de acordo com o Algoritmo \ref{algo:cap5_cruz_
     }
     }
     \caption{Cruzamento escolhido para algoritmos híbridos propostos}
-    \label{algo:cap5_cruz_hibrid}
+    \label{algo:cap3_cruz_hibrid}
 \end{algorithm}
 
-Ainda sobre o processo representado pela Figura \ref{fig:cap5_fluxograma_cromossomo}, é necessário explicar exatamente como as variáveis dos cromossomos são necessárias pela modelagem, esta explicação se dá melhor na Figura \ref{fig:cap5_fluxograma_modelos_res_comb}. A segunda etapa do processo é dada pelo Modelo do Resíduo e a terceira, pelo Modelo de Combinação. Em ambas estas etapas, podem ser utilizados quaisquer algoritmos de regressão para que com base nos dados de treino, se gere estes dois modelos e com dados de teste se avalie.
+Ainda sobre o processo representado pela Figura \ref{fig:cap3_fluxograma_cromossomo}, é necessário explicar exatamente como as variáveis dos cromossomos são necessárias pela modelagem, esta explicação se dá melhor na Figura \ref{fig:cap3_fluxograma_modelos_res_comb}. A segunda etapa do processo é dada pelo Modelo do Resíduo e a terceira, pelo Modelo de Combinação. Em ambas estas etapas, podem ser utilizados quaisquer algoritmos de regressão para que com base nos dados de treino, se gere estes dois modelos e com dados de teste se avalie.
 
 Neste trabalho para as etapas 2, Modelo do Resíduo e 3, Modelo de Combinação, podem ser escolhidos dois algoritmos de hiper-parametrização de MLPs, baseados em algoritmo genético, descritos nas próximas subseções \ref{subsec:ag-mlp} e \ref{subsec:ag-mlp-vr}.
 
@@ -180,14 +197,14 @@ Neste trabalho para as etapas 2, Modelo do Resíduo e 3, Modelo de Combinação,
 
 Para obter a MLP bem parametrizada o algoritmo procura os melhores parâmetros para o MLP. Este tipo de otimização pode ser encontrado na literatura, sendo muito útil para aumentar a performance deste tipo de RNA \cite{ramchoun2016multilayer, idrissi2016genetic} . Nesta busca, o algoritmo gera uma população de MLPs, com parâmetros aleatórios, avalia estes e ranqueia o melhores parâmetros. Depois disso, uma nova população é gerada, após um cruzamento entre melhores e piores MLPs. A melhor MLP é repetida na próxima geração. Depois do cruzamento, os parâmetros numéricos sofrem mutação. Esta nova população é re-avaliada e o ciclo continua.
 
-O algoritmo busca para cada MLP baseado nos cromossomos mostrados na Figura \ref{fig:cap5_cromo_mlp}. Para implementação das MLP é utilizada a biblioteca Scikit-learn do python \cite{scikit-learn}. É definido uma quantidade máxima de iterações em 500. Mais detalhadamente, cada um dos cromossomos tem as seguintes características:
+O algoritmo busca para cada MLP baseado nos cromossomos mostrados na Figura \ref{fig:cap3_cromo_mlp}. Para implementação das MLP é utilizada a biblioteca Scikit-learn do python \cite{scikit-learn}. É definido uma quantidade máxima de iterações em 500. Mais detalhadamente, cada um dos cromossomos tem as seguintes características:
 
 \begin{figure}[bp]
     \centering
     \caption{Cromossomos do Algoritmo Genético da MLP.}
-    \includegraphics[width=\textwidth]{Figuras/cap5/cromo_mlp.jpg}
+    \includegraphics[width=\textwidth]{Figuras/cap3/cromo_mlp.jpg}
     \source{Autor.}
-    \label{fig:cap5_cromo_mlp}
+    \label{fig:cap3_cromo_mlp}
 \end{figure}
 
 \begin{itemize}
@@ -217,12 +234,12 @@ Sobre o \textit{Learning Rate}, mais detalhadamente cada uma das possibilidades 
 
 Este modelo é análogo ao da Seção \ref{subsec:ag-mlp} precedente, na utilização de MLPs como elementos principais, porém com a diferença que ao invés de se escolher uma RNA apenas para o Modelo do Resíduo e Modelo de Combinação, são escolhidas as melhores RNA de forma a ser feita uma média na predição entre as melhores. Este mecanismo é chamado de \textit{Voting Regressor}. 
 
-Para a implementação correta deste algoritmo, é adicionado um cromossomo a mais C5 aqueles que foram explicados e ilustrados na Figura \ref{fig:cap5_fluxograma_cromossomo}. 
+Para a implementação correta deste algoritmo, é adicionado um cromossomo a mais C5 aqueles que foram explicados e ilustrados na Figura \ref{fig:cap3_fluxograma_cromossomo}. 
 
 \begin{itemize}
     \item C5: Percentagem de MLPs que farão parte do \textit{Voting Regressor}.
 \end{itemize}
 
-O cromossomo C5 tem cruzamento equivalente ao demonstrado pelo Algoritmo \ref{algo:cap5_cruz_hibrid}, porém sua mutação dá a partir da variação da adição de um número inteiro obtido por uma distribuição uniforme entre -10 e 10. 
+O cromossomo C5 tem cruzamento equivalente ao demonstrado pelo Algoritmo \ref{algo:cap3_cruz_hibrid}, porém sua mutação dá a partir da variação da adição de um número inteiro obtido por uma distribuição uniforme entre -10 e 10. 
 
 %\subsection{Voting Regressor Ensembles}
