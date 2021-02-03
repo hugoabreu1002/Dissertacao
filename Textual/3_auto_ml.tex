@@ -59,6 +59,7 @@ A otimização do enxame de partículas (PSO). É um método de otimização ale
 Em que $v_i^k$ é a velocidade de cada partícula $i$ na iteração $k$, $x_i^{k}$ é a solução (posição) de cada partícula $i$ na iterção $k$. $c_1$ e $c_2$ são constantes positivas enquanto que $r_1$ e $r_2$ são duas variáveis aleatórios de distribuição uniforme entre 0 e 1. Ainda sobre a equação de atualização da velocidade da partícula,  $w$ é o peso inercial responsável por causar um efeito inercial da velocidade anterior na atual. Pode-se estabelecer um limite de velocidade em todas as dimensões, saturando a velocidade da partícula. \cite{jaberipour2011particle}.
 
 \subsection{Auto ARIMA versus SARIMAX ACO-PSO Search}
+\label{subsec:autoarima_psoaco}
 
 A metodologia de Box-Jenkins \cite{hipel1977advances} para determinar um modelo ARIMA ainda é muito utilizada, para isto as funções ACF e PACF vem a uso para identificar qual o grau de auto-dependência da serie temporal,identificar se esta não é estacionária e também enxergar se há uma sazonalidade implícita. Em casos de não estacionariedade é feita uma diferenciação numéria. \cite{hipel1977advances,atique2019forecasting, hyndman2020forecasting}.
 
@@ -125,7 +126,7 @@ Uma forma mais inteligente de realizar esta busca seria utilizando algoritmos os
 
 Sabe-se que o algoritmo PSO foi formulado para uso com variáveis contínuas, entretanto, pode-se facilmente adequar o valor das posições das partículas de forma a condizer com um problema discreto, através de um mapeamento, tal como um arredondamento ao inteiro mais próximo. No caso do PSO, este algoritmo ficou encarregado por otimizar os parâmetros (P, D, Q, S, X), tendo seu espaço de busca determinado pelos possíveis valores que esse conjunto pode receber. Por exemplo, se $ 0 \leq P,D,Q \leq 3 $ $S \subseteq {12, 24, 48}$ e houverem 5 variáveis Exógenas distintas, então o espaço de busca de uma partícula será a partir do vértice 0 de um grafo até o vértice $[4, 4, 4, 3, 25]$ levando a um total de 4.800 possibilidades.
 
-A função de \textit{fitness} do PSO se torna uma instância do algoritmo ACO, que recebe os parâmetros (P, D, Q, S, X) encontrados pelo PSO e busca para testes parâmetros (p, d, q) adicionais. O ACO é um algoritmo que já foi formulado para operar em busca de grafos, logo, nenhum mapeamento foi necessário para seus agentes (formigas). Percebe-se a necessidade de dividir os dois algoritmos pois, se $ 0 \leq p,d,q \leq 3 $ levando a um total de 64 possibilidades, versos 4.800 anteriores, levaria a um total de 307.200 possibilidade de busca, o que causa problema de memória para os algoritmos. Dividindo-se esta carga de entre os algoritmos, menos memória é necessária.
+A função de \textit{fitness} do PSO se torna uma instância do algoritmo ACO, utilizando a métrica MAPE entre cada solução candidata e a série original. A instância do algoritmo ACO recebe os parâmetros (P, D, Q, S, X) encontrados pelo PSO e busca para testes parâmetros (p, d, q) adicionais. O ACO é um algoritmo que já foi formulado para operar em busca de grafos, logo, nenhum mapeamento foi necessário para seus agentes (formigas). Percebe-se a necessidade de dividir os dois algoritmos pois, se $ 0 \leq p,d,q \leq 3 $ levando a um total de 64 possibilidades, versos 4.800 anteriores, levaria a um total de 307.200 possibilidade de busca, o que causa problema de memória para os algoritmos. Dividindo-se esta carga de entre os algoritmos, menos memória é necessária.
 
 A Figura \ref{fig:cap3_fluxograma_sarimax} demonstra o fluxograma da procura pelo melhor modelo SARIMAX e como ele será utilizado posteriormente pelo que será descrito na próxima seção \ref{subsec:modelos_hibridos}
 
@@ -164,17 +165,7 @@ Como pode ser visto, existem 4 cromossomos que são utilizados na busca por algo
 
 Os cromossomos C1-C4 são inicializados como números inteiros de uma distribuição uniforme de limite inferior 1 e superior 20. Foi estipulado uma probabilidade de mutação e cruzamento de 80\%.
 
-\begin{figure}[!bp]
-    \centering
-    \caption{Fluxograma detalhado sobre requisitos do Modelo do Resíduo e Modelo de Combinação não Linear.}
-    \includegraphics[width=\textwidth]{Figuras/cap3/fluxograma_modelos_res_comb.jpg}
-    \source{Autor.}
-    \label{fig:cap3_fluxograma_modelos_res_comb}
-\end{figure}
-
-O operador de cruzamento funciona de acordo com o Algoritmo \ref{algo:cap3_cruz_hibrid}. Os indivíduos são colocados em ordem do melhor \textit{fitness} ao pior, então o melhor indivíduo sempre é levado para a próxima população. Em seguida, para cada um dos indivíduos restantes, é definido aleatoriamente um conjunto dos quatro cromossomos que serão recebidos de um indivíduo de melhor posição, esta que é dada pela posição do individuo simetricamente. A mutação dos cromossomos se dá a partir da variação da adição de um número inteiro obtido por uma distribuição uniforme entre -2 e 2.
-
-\begin{algorithm}[!htbp]
+\begin{algorithm}[!hbp]
     \Entrada{população, Prob. Cruzamento}
     \Saida{Nova população}
     \Inicio{
@@ -192,7 +183,17 @@ O operador de cruzamento funciona de acordo com o Algoritmo \ref{algo:cap3_cruz_
     \label{algo:cap3_cruz_hibrid}
 \end{algorithm}
 
+O operador de cruzamento funciona de acordo com o Algoritmo \ref{algo:cap3_cruz_hibrid}. Os indivíduos são colocados em ordem do melhor \textit{fitness} ao pior, então o melhor indivíduo sempre é levado para a próxima população. Em seguida, para cada um dos indivíduos restantes, é definido aleatoriamente um conjunto dos quatro cromossomos que serão recebidos de um indivíduo de melhor posição, esta que é dada pela posição do individuo simetricamente. A mutação dos cromossomos se dá a partir da variação da adição de um número inteiro obtido por uma distribuição uniforme entre -2 e 2.
+
 Ainda sobre o processo representado pela Figura \ref{fig:cap3_fluxograma_cromossomo}, é necessário explicar exatamente como as variáveis dos cromossomos são necessárias pela modelagem, esta explicação se dá melhor na Figura \ref{fig:cap3_fluxograma_modelos_res_comb}. A segunda etapa do processo é dada pelo Modelo do Resíduo e a terceira, pelo Modelo de Combinação. Em ambas estas etapas, podem ser utilizados quaisquer algoritmos de regressão para que com base nos dados de treino, se gere estes dois modelos e com dados de teste se avalie.
+
+\begin{figure}[!htbp]
+    \centering
+    \caption{Fluxograma detalhado sobre requisitos do Modelo do Resíduo e Modelo de Combinação não Linear.}
+    \includegraphics[width=\textwidth]{Figuras/cap3/fluxograma_modelos_res_comb.jpg}
+    \source{Autor.}
+    \label{fig:cap3_fluxograma_modelos_res_comb}
+\end{figure}
 
 Neste trabalho para as etapas 2, Modelo do Resíduo e 3, Modelo de Combinação, podem ser escolhidos dois algoritmos de hiper-parametrização de MLPs, baseados em algoritmo genético, descritos nas próximas subseções \ref{subsec:ag-mlp} e \ref{subsec:ag-mlp-vr}.
 
@@ -203,7 +204,7 @@ Para obter a MLP bem parametrizada o algoritmo procura os melhores parâmetros p
 
 O algoritmo busca para cada MLP baseado nos cromossomos mostrados na Figura \ref{fig:cap3_cromo_mlp}. Para implementação das MLP é utilizada a biblioteca Scikit-learn do python \cite{scikit-learn}. É definido uma quantidade máxima de iterações em 500. Mais detalhadamente, cada um dos cromossomos tem as seguintes características:
 
-\begin{figure}[bp]
+\begin{figure}[!htbp]
     \centering
     \caption{Cromossomos do Algoritmo Genético da MLP.}
     \includegraphics[width=\textwidth]{Figuras/cap3/cromo_mlp.jpg}
@@ -245,5 +246,3 @@ Para a implementação correta deste algoritmo, é adicionado um cromossomo a ma
 \end{itemize}
 
 O cromossomo C5 tem cruzamento equivalente ao demonstrado pelo Algoritmo \ref{algo:cap3_cruz_hibrid}, porém sua mutação dá a partir da variação da adição de um número inteiro obtido por uma distribuição uniforme entre -10 e 10. 
-
-%\subsection{Voting Regressor Ensembles}

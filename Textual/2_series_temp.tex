@@ -114,12 +114,13 @@ As métrica MAPE, MAE e RMSE, dadas pelas equações \ref{eq:MAPE} \ref{eq:MAE} 
 \label{cap:dados_prep}
 
 \subsection{Origem}
+\label{subsec:orig_data}
 
 O Instituto Nacional de Meteorologia disponibiliza dados a partir de diversas estações espalhadas pelo país através de seu Banco de Dados Meteorológicos (BDMEP) \cite{INMET}.
 
 Os dados são adquiridos a partir de estações de medição, havendo as automáticas e as convencionais, estas últimas estão sendo descontinuadas \cite{lima2020comparaccao}. Utilizando os dados do INMET e outras fontes de dados abertos é possível obter criar modelos de interpolação espacial e predição de temporal \cite{mendes2020integraccao}.
 
-Os dados foram obtidos pelo período entre 2008 e 2020, entretanto são trabalhados apenas os dados horários dos últimos 365 dias. Entre os dados presentes, se encontram séries temporais horárias das seguintes variáveis:
+Os dados obtidos contém informação pelo período entre 2008 e 2020, entretanto, como o intuito é fazer predição de curto prazo são trabalhadas series de no máximo 30 dias, para avaliação dos modelos que será introduzidos é possível então utilizar diversas séries horárias com o limite máximo de 720 amostras. Entre os dados presentes, se encontram séries temporais horárias das seguintes variáveis:
 
 \begin{enumerate}
     \item Radiação Global (W/m\textsuperscript{2})
@@ -132,7 +133,7 @@ Os dados foram obtidos pelo período entre 2008 e 2020, entretanto são trabalha
     \item Direção do vento (graus)
 \end{enumerate}
 
-Estando destacadas as variáveis disponíveis escolhidas como variáveis exógenas para previsão temporal da radiação.
+Estando destacadas em negrito as variáveis disponíveis escolhidas como variáveis exógenas para previsão temporal da radiação.
 
 \subsection{Pré-processamento}
 

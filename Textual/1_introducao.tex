@@ -9,7 +9,7 @@ Estimativa de potencial de geração fotovoltaico é um tema que já obteve gran
 
 A utilização de técnicas de inteligência artificial aplicadas a este tema tem focado na predição temporal de geração \cite{voyant2017machine, wolff2016statistical, li2016hierarchical}. Este tipo de predição é muito útil levando-se em consideração o sistema elétrico completo de uma região ou país, para balanceamento de oferta e demanda, sendo possível uma programabilidade maior para o operador do sistema elétrico, em relação a adequação do uso de outras fontes de energia.
 
-São encontrados alguns métodos de previsão de energia fotovoltaica na literatura, sendo subdivididos de acordo com o horizonte de previsão \cite{mellit2020advanced}. A Tabela \ref{tab:app_forecast} resume os prazos e aplicações para cada método.
+São encontrados alguns métodos de previsão de energia fotovoltaica na literatura, sendo subdivididos de acordo com o horizonte de previsão \cite{mellit2020advanced}. A Tabela \ref{tab:app_forecast} resume os prazos e aplicações para cada método. Neste trabalho, o foco será em previsão de curto prazo, utilizando dados horários.
 
 \begin{table}[!ht]
 \caption{Demonstration of simple table syntax.} 
@@ -23,8 +23,6 @@ Longo prazo        & Anos                     & manutenção e planejamento de u
 \end{tabular}
 \source{Autor.}
 \end{table}
-
-Este trabalho busca unir de uma melhor forma o uso da ciência de dados e algoritmos de aprendizado de máquina para estimação de potencial de geração em sítios, levando a otimização da escolha utilizando dados reais de geração e dados de simulação, levando em consideração diversas bases de dados diferentes em um estudo de caso para a região nordeste do Brasil.
 
 \section{Objetivos}
 
@@ -45,10 +43,15 @@ Criar modelos de auto ML capazes de se adaptar e fazer a previsão de séries te
     \item Compilar programa de computador para aplicação dos modelos propostos
 \end{itemize}
 
-\section{Estado-da-arte}
+\section{Estado da arte}
 
-Modelos híbridos, em que se utiliza da modelagem linear dada por um ARIMA ou variante já foi muito utilizada e discutida na literatura \cite{zhang2003time, khashei2010artificial, babu2014moving, de2014hybrid, de2016hybrid, domingos2019intelligent}.
+Modelos híbridos, em que se utiliza da modelagem linear dada por um ARIMA ou variante já foi muito utilizada e discutida na literatura \cite{zhang2003time, khashei2010artificial, babu2014moving, de2014hybrid, de2016hybrid, domingos2019intelligent}. O intuito destes modelos, chamados híbridos, é de que incrementar a capacidade de adaptação da modelagem linear ARIMA for meio de outros algoritmos de \textit{machine learning} ou \textit{extreme learning machines} \cite{yu2020hybrid}
+
+Nos últimos anos, foi comum a implementação de modelos de série temporal linear combinado com \textit{machine learning} para previsões de séries temporais, utilizando ARIMA com RNA \cite{xiong2017hybrid}, SVM \cite{domingos2019intelligent}, LSTM \cite{choi2018stock}.
+
+Se é muito utilizado algoritmos de inteligência de enxame para no processo de otimização de modelos híbridos. Sendo vistos diversas aplicações utilizando os modelos que são abordados nesse trabalho: Algoritmo Genético (GA) \cite{huang2012hybrid}, algoritmo de Otimização de Enxame de Partículas (PSO) \cite{bagheri2014financial, pradeepkumar2017forecasting}, e algoritmo Ant Colony Optimization (ACO) \cite{shen2013optimal}. Mais especificamente sobre previsão de geração fotovoltaica e irradiação solar, o padrão de utilização de modelos se mantém, \cite{sobri2018solar, wang2019review}, havendo um destaque maior para o uso de \textit{deep learning}.
+
 
 \section{Estrutura da dissertação}
 
-A organização das seções deste trabalho se dá da seguinte forma. Primeiramente será apresentada a teoria por trás da previsão de séries temporais utilizando modelos lineares \ref{cap:series_temp}, no mesmo capítulo será discutido os dados de series temporais horárias obtidos a partir da base de dados do INMET \cite{INMET}. Em seguida no capítulo \ref{cap:auto_ml} são apresentados os modelos híbridos que utilizam dos algoritmos de machine learning apresentados no capítulo antecedente.
+A organização das seções deste trabalho se dá da seguinte forma. Primeiramente será apresentada a teoria por trás da previsão de séries temporais utilizando modelos lineares \ref{cap:series_temp}, no mesmo capítulo será discutido os dados de series temporais horárias obtidos a partir da base de dados do INMET \cite{INMET}. Em seguida no capítulo \ref{cap:auto_ml} são apresentados os algoritmos de otimização e os modelos híbridos utilizados no trabalho.
