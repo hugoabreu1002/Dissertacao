@@ -8,9 +8,30 @@
 
 Se trata de um algoritmo de mete-heurístico formulado no anos 90 \cite{dorigo1999ant} no intuito de solucionar problemas de combinatoriais de larga escala. O algoritmo se baseia no comportamento de formigas em busca de alimento \cite{dorigo2006ant}. Uma forma mais simples de visualizar a movimentação dos agentes é a partir da teoria de grafos.
 
-Cada formiga precisa construir uma solução para se mover pelo grafo. Para selecionar a próxima aresta em seu passeio, uma formiga irá considerar o comprimento de cada aresta disponível a partir de sua posição atual, bem como o nível de feromônio correspondente.
+Grafos consistem de uma tripla formada por um conjunto de vértices, um conjunto de bordas e uma relação entre 2 vértices, não necessariamente distintos \cite{west2001introduction}, na Figura \ref{fig:cap3_graph_example} está representado um grafo cujos vértices são $\{a, b, c, d, e, f, g\}$, em que estes tem bordas com pesos, para o algoritmo ACO estes pesos representam a distância entre pontos no espaço de busca. Uma trilha é definida como um conjunto de tuplas que representam uma movimentação sobre o grafo, exemplo: \{(a,b),(b,e),(e,c)\}, no algoritmo ACO cada formiga, forma sua trilha e incrementa feromônio nas arestas caminhos de acordo com uma função de \textit{fitness}. 
 
-Em cada etapa do algoritmo, cada formiga se move de um estado $\textit{x}$ para um outro $\textit{y}$, correspondendo a uma solução intermediária mais completa. A partir disto, cada formiga $k$ calcula um grupo $A_{k}(x)$ de passeios movimentos factíveis a partir da sua posição atual para cada iteração, a formiga se move então para um desses novos estados possíveis de acordo com a probabilidade. Para a formiga $k$, a probabilidade $p_{xy}^{k}$ de se mover do estado $x$ para o estado $y$ depende da combinação de dois valores, a atratividade $\eta _{xy}$ dessa mudança, alguma heurística indicando a conveniência a priori desse movimento e a quantidade de feromônio depositada na trilha $\tau _{xy}$, indicando o quão proficiente ele foi no passado para fazer aquele movimento específico. O nível da trilha representa a posteriori uma indicação da conveniência desse movimento.
+\begin{figure}
+\centering
+\caption{Exemplo de Grafo.}
+\begin{tikzpicture}[scale=2, auto,swap]
+    % Draw a 7,11 network
+    % First we draw the vertices
+    \foreach \pos/\name in {{(0,1)/a}, {(2,1)/b}, {(4,1)/c},
+                            {(0,0)/d}, {(3,0)/e}, {(2,-1)/f}, {(4,-1)/g}}
+        \node[vertex] (\name) at \pos {$\name$};
+    % Connect vertices with edges and draw weights
+    \foreach \source/ \dest /\weight in {b/a/7, c/b/8,d/a/5,d/b/9,
+                                         e/b/7, e/c/5,e/d/15,
+                                         f/d/6,f/e/8,
+                                         g/e/9,g/f/11}
+        \path[edge] (\source) -- node[weight] {$\weight$} (\dest);
+\end{tikzpicture}
+\label{fig:cap3_graph_example}
+\end{figure}
+
+Cada formiga precisa construir uma solução para se mover pelo grafo. Para selecionar a próxima aresta em sua trilha, uma formiga irá considerar o comprimento de cada aresta disponível a partir de sua posição atual, bem como o nível de feromônio correspondente.
+
+Em cada etapa do algoritmo, cada formiga se move de um estado $\textit{x}$ para um outro $\textit{y}$, correspondendo a uma solução intermediária mais completa. Cada formiga $k$ calcula um grupo $A_{k}(x)$ de trilhas com movimentos factíveis a partir da sua posição atual para cada iteração, a formiga se move então para um desses novos estados possíveis de acordo com a probabilidade. Para a formiga $k$, a probabilidade $p_{xy}^{k}$ de se mover do estado $x$ para o estado $y$ depende da combinação de dois valores, a atratividade $\eta _{xy}$ dessa mudança, alguma heurística indicando a conveniência a priori desse movimento e a quantidade de feromônio depositada na trilha $\tau _{xy}$, indicando o quão proficiente ele foi no passado para fazer aquele movimento específico. O nível da trilha representa a posteriori uma indicação da conveniência desse movimento.
 
 Por fim cada formiga $k$ se move entre os estados $x$ e $y$ com uma probabilidade conforme a equação \ref{eq:aco_prob}.
 
@@ -19,15 +40,21 @@ Por fim cada formiga $k$ se move entre os estados $x$ e $y$ com uma probabilidad
     p_{xy}^k =
     \frac
     { (\tau_{xy}^{\alpha}) (\eta_{xy}^{\beta}) }
-    { \sum_{z\in \mathrm{allowed}_x} (\tau_{xz}^{\alpha}) (\eta_{xz}^{\beta}) }
+    { \sum_{z\in \mathbf{x^*}} (\tau_{xz}^{\alpha}) (\eta_{xz}^{\beta}) }
 \end{equation}
 
-em que $\tau _{xy}$ é a quantidade de ferormônio depositado para a mudança de estado de $x$ para $y$, $\alpha \geq 0$  é um parâmetro de controle da influência de $\tau _{xy}$,$\eta _{xy}$ é a desejabilidade $xy$ tipicamente $1/d_{{xy}}$, em que $d$ é a distância entre os vértices $\textit{x}$ e $\textit{y}$, tendo $\beta  \geq 1$ como seu parâmetro de controle.
+Na Equação \ref{eq:aco_prob}, $\tau _{xy}$ é a quantidade de ferormônio depositado para a mudança de estado de $x$ para $y$, $\alpha \geq 0$  é um parâmetro de controle da influência de $\tau _{xy}$,$\eta _{xy}$ é a desejabilidade $xy$ tipicamente $1/d_{{xy}}$, em que $d$ é a distância entre os vértices $\textit{x}$ e $\textit{y}$, tendo $\beta  \geq 1$ como seu parâmetro de controle. Os pontos $z\in \mathbf{x^*}$ significa que não pode 
 
-As trilhas geralmente são atualizadas quando todas as formigas concluem sua solução, aumentando ou diminuindo o nível das trilhas correspondentes aos movimentos que fizeram parte de soluções "boas" ou "ruins", respectivamente. Um exemplo de regra de atualização global de feromônio é como na equação \ref{eq:aco_delta_tal}
+As trilhas geralmente são atualizadas quando todas as formigas concluem sua solução, aumentando ou diminuindo o nível das trilhas correspondentes aos movimentos que fizeram parte de soluções "boas" ou "ruins", respectivamente. A regra de atualização global de feromônio é como nas equações \ref{eq:aco_tau} e \ref{eq:aco_delta_tau}.
 
 \begin{equation}
-\label{eq:aco_delta_tal}
+\label{eq:aco_tau}
+    \tau_{xy} \leftarrow
+    (1-\rho)\tau_{xy} + \sum_{k}\Delta \tau^{k}_{xy}
+\end{equation}
+
+\begin{equation}
+\label{eq:aco_delta_tau}
     \Delta{\tau^{k}_{xy}} =
     \begin{cases}
     Q/L_k & \mbox{if ant }k\mbox{ uses curve }xy\mbox{ in its tour} \\
@@ -35,12 +62,14 @@ As trilhas geralmente são atualizadas quando todas as formigas concluem sua sol
     \end{cases}
 \end{equation}
 
-$\rho$ é o coeficiente de evaporação de feromônio e $\Delta \tau _{xy}^{k}$ é a quantidade de feromônio que será depositada pela formiga $k$th ant como mostrado na equação abaixo \ref{eq:aco_tau}. $L_{k}$ é o custo dado pelo caminho percorrido pela formiga $k$th sendo tipicamente a distância percorrida e $Q$ é uma constante.
+Na equação \ref{eq:aco_tau}, $\rho$ é o coeficiente de evaporação de feromônio e $\Delta \tau _{xy}^{k}$ é a quantidade de feromônio que será depositada pela formiga $k$ como mostrado na equação abaixo \ref{eq:aco_tau}. $L_{k}$ é o custo dado pela transação de estado de $x$ para $y$ de posição nas arestas do grafo na última movimentação da formiga $k$ e $Q$ é uma constante. 
+
+Neste trabalho será utilizado $Q = 1$  e $\rho = 0.5$ enquanto que o custo $L_{k}$ é dado pela equação \ref{eq:aco_Lk}. $C$ representa a função de \textit{fitness}. Perceba que, se $C_y$ for menor que $C_x$ o resultado da exponencial deverá ser menor, porém $L_{k}$ é utilizado como denominador na equação \ref{eq:aco_delta_tau}, ou seja, mais feromônio será aplicado a aresta da transação de estado, o ideal para um problema de minimização.
 
 \begin{equation}
-\label{eq:aco_tau}
-    \tau_{xy} \leftarrow
-    (1-\rho)\tau_{xy} + \sum_{k}\Delta \tau^{k}_{xy}
+\label{eq:aco_Lk}
+    L_{k} =
+    exp(\frac{C_y - C_x}{C_x})
 \end{equation}
 
 \subsection{PSO}
