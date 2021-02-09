@@ -75,7 +75,11 @@ Neste trabalho será utilizado $Q = 1$  e $\rho = 0.5$ enquanto que o custo $L_{
 \subsection{PSO}
 \label{subsec:pso}
 
-A otimização do enxame de partículas (PSO). É um método de otimização aleatório baseado em população que foi inspirado no comportamento de bando de pássaros ou cardume de peixes. No PSO, cada solução é um “pássaro” no espaço de busca. Chamamos isso de “partícula”. Um enxame dessas partículas se move através do espaço de busca para encontrar uma posição ideal. Cada partícula possui uma posição e uma velocidade no espaço do problema -dimensional, onde denota a ésima partícula e representa a dimensão do problema ou número de variáveis desconhecidas. O PSO é inicializado com um grupo de partículas aleatórias (soluções) e, em seguida, procura por ótimo atualizando gerações. Durante cada iteração, cada partícula é atualizada seguindo dois valores “melhores”. O primeiro é o vetor posição da melhor solução (aptidão) que esta partícula alcançou até agora. O valor de aptidão também é armazenado. Esta posição é chamada de $pbest$. Outra posição “melhor” que é rastreada pelo otimizador do enxame de partículas é a melhor posição, obtida até agora, por qualquer partícula na população. Esta melhor posição é a melhor global atual e é chamada de $gbest$. Depois de encontrar os dois melhores valores, a posição e a velocidade das partículas são atualizadas pelas duas equações \ref{eq:pso_vk} \cite{jaberipour2011particle}.
+A otimização por enxame de partículas (PSO) é baseada em um população de agentes inspirada no comportamento de bando de pássaros, cardumes de peixe e enxames em geral \cite{kennedy1995particle}. No PSO, cada solução é a posição de partícula no espaço de busca. A inteligência neste algoritmo se dar por conta do enxame dessas partículas se move através do espaço de busca para encontrar uma posição ideal. 
+
+Cada partícula possui uma posição e uma velocidade no espaço do problema. O PSO é inicializado com um grupo de partículas aleatórias, em seguida, procura pelo ótimo atualizando a posição e velocidade destas partículas de acordo com topologias \cite{figueiredo2014investigating}.
+
+Durante cada iteração, cada partícula é atualizada seguindo dois valores “melhores”. O primeiro é o vetor posição da melhor solução (aptidão) que esta partícula alcançou até agora. O valor de aptidão também é armazenado. Esta posição é chamada de $pbest$. Outra posição “melhor” que é rastreada pelo otimizador do enxame de partículas é a melhor posição, obtida até agora, por qualquer partícula na população. Esta melhor posição é a melhor global atual e é chamada de $gbest$. Depois de encontrar os dois melhores valores, a posição e a velocidade das partículas são atualizadas pelas duas equações \ref{eq:pso_vk} \cite{jaberipour2011particle}.
 
 \begin{equation}
 \label{eq:pso_vk}
@@ -85,7 +89,7 @@ A otimização do enxame de partículas (PSO). É um método de otimização ale
     \end{gathered}
 \end{equation}
 
-Em que $v_i^k$ é a velocidade de cada partícula $i$ na iteração $k$, $x_i^{k}$ é a solução (posição) de cada partícula $i$ na iterção $k$. $c_1$ e $c_2$ são constantes positivas enquanto que $r_1$ e $r_2$ são duas variáveis aleatórios de distribuição uniforme entre 0 e 1. Ainda sobre a equação de atualização da velocidade da partícula,  $w$ é o peso inercial responsável por causar um efeito inercial da velocidade anterior na atual. Pode-se estabelecer um limite de velocidade em todas as dimensões, saturando a velocidade da partícula. \cite{jaberipour2011particle}.
+Em que $v_i^k$ é a velocidade de cada partícula $i$ na iteração $k$, $x_i^{k}$ é a solução (posição) de cada partícula $i$ na iterção $k$. $c_1$ e $c_2$ são constantes positivas enquanto que $r_1$ e $r_2$ são duas variáveis aleatórios de distribuição uniforme entre 0 e 1. Ainda sobre a equação de atualização da velocidade da partícula,  $w$ é o peso inercial responsável por causar um efeito inercial da velocidade anterior na atual. Pode-se estabelecer um limite de velocidade em todas as dimensões, saturando a velocidade da partícula. \cite{jaberipour2011particle}. Neste trabalho será utilizada a topologia Global, nela todas as partículas podem interagir entre si, ou seja o $gbest$ é único e visível para todas as partículas durante uma geração.
 
 \subsection{Auto ARIMA versus SARIMAX ACO-PSO Search}
 \label{subsec:autoarima_psoaco}
