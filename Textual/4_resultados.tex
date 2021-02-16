@@ -1,6 +1,8 @@
 \chapter{Resultados}
 \label{cap:resultados}
 
+\section{Protocolo}
+
 Os resultados a seguir seguem o mesmo protocolo de uso dos modelos discutidos até o momento, sumarizados a seguir:
 
 \begin{outline}[enumerate]
@@ -30,14 +32,14 @@ A primeira série temporal escolhida se trata dos últimos 30 dias, entre 12/03/
 \begin{center}
 \begin{tabular}{ccccc}
                     & \Longstack{SARIMAX \\ (p,d,q)(P,D,Q,S)} & Variáveis Exógenas & AICc & MAPE  \\\hline
-\textbf{auto ARIMA} & (1,0,2)(1,0,2,24) & Todas & -1488.858 & \textbf{5.3497} \\\hline
+auto ARIMA & (1,0,2)(1,0,2,24) & Todas & -1488.858 & \textbf{5.3497} \\\hline
 PSO-ACO             & (2,0,0)(1,0,1,24) & Temperatura do Ar & \textbf{-1516.263} & 6.7475 \\\hline
 \label{tab:cap4_comp_maceio_autoarima_psoaco}
 \end{tabular}
 \end{center}
 \end{table}
 
-Como descrito no início do capítulo, e pelo que foi obtido, optou-se por utilizar a modelagem SARIMAX obtida descrita na segunda linha da Tabela \ref{tab:cap4_comp_maceio_autoarima_psoaco}, como entrada para os algoritmos híbridos descritos pela seções \ref{subsec:ag-mlp} e \ref{subsec:ag-mlp-vr}, resultando finalmente nos resultados descritos pela Tabela \ref{tab:cap4_comp_maceio_agmlp_agmlpvr}.
+Como descrito no início do capítulo, e pelo que foi obtido, optou-se por utilizar a modelagem SARIMAX obtida descrita na segunda linha da Tabela \ref{tab:cap4_comp_maceio_autoarima_psoaco}, como entrada para os algoritmos híbridos descritos pela seções \ref{subsec:ag-mlp} e \ref{subsec:ag-mlp-vr}, resultando finalmente nos resultados descritos pela Tabela \ref{tab:cap4_comp_maceio_agmlp_agmlpvr}.Para ambos os algoritmos foram utilizadas 3 gerações e 12 indivíduos.
 
 \begin{table}[htbp]
 \caption{Comparação entre modelos para aos dados da cidade de Maceió-AL}
@@ -56,7 +58,7 @@ Um resultado gráfico pode ser observado na Figura \ref{fig:cap4_maceio_3_days_h
 
 \begin{figure}[!htbp]
     \centering
-    \caption{Últimas 72 horas do resultado utilizando algoritmo AG-MLP descrito na seção \ref{subsec:ag-mlp}. Para a cidade de Maceió-AL}
+    \caption{Últimas 72 horas do resultado utilizando algoritmos AG-MLP e AG-MLP-VR, SARIMAX e série real. Para a cidade de Maceió-AL}
     \includegraphics[width=\textwidth]{Figuras/cap4/comparison_hibrids_mc.png}
     \source{Autor.}
     \label{fig:cap4_maceio_3_days_hibrids}
@@ -71,14 +73,14 @@ A segunda série temporal escolhida se trata dos últimos 15 dias, entre 17/12/2
 \begin{center}
 \begin{tabular}{ccccc}
                     & \Longstack{SARIMAX \\ (p,d,q)(P,D,Q,S)} & Variáveis Exógenas & AICc & MAPE  \\\hline
-\textbf{auto ARIMA} & (0,1,1)(2,0,2,24) & Todas & -695.210 & \textbf{57.106} \\\hline
+auto ARIMA & (0,1,1)(2,0,2,24) & Todas & -695.210 & \textbf{57.106} \\\hline
 PSO-ACO             & (2,0,2)(1,0,1,24) & \Longstack{Temperatura do Ar \\ Precipitação} & \textbf{-754.4754} & 52.316 \\\hline
 \label{tab:cap4_comp_flor_autoarima_psoaco}
 \end{tabular}
 \end{center}
 \end{table}
 
-Como descrito no início do capítulo, e pelo que foi obtido, optou-se por utilizar a modelagem SARIMAX obtida descrita na segunda linha da Tabela \ref{tab:cap4_comp_flor_autoarima_psoaco}, como entrada para os algoritmos híbridos descritos pela seções \ref{subsec:ag-mlp} e \ref{subsec:ag-mlp-vr}, resultando finalmente nos resultados descritos pela Tabela \ref{tab:cap4_comp_flor_agmlp_agmlpvr}.
+Como descrito no início do capítulo, e pelo que foi obtido, optou-se por utilizar a modelagem SARIMAX obtida descrita na segunda linha da Tabela \ref{tab:cap4_comp_flor_autoarima_psoaco}, como entrada para os algoritmos híbridos descritos pela seções \ref{subsec:ag-mlp} e \ref{subsec:ag-mlp-vr}, resultando finalmente nos resultados descritos pela Tabela \ref{tab:cap4_comp_flor_agmlp_agmlpvr}.Para ambos os algoritmos foram utilizadas 3 gerações e 12 indivíduos.
 
 \begin{table}[htbp]
 \caption{Comparação entre modelos para aos dados da cidade de Florianópolis-SC}
@@ -97,8 +99,49 @@ Um resultado gráfico pode ser observado na Figura \ref{fig:cap4_flor_3_days_hib
 
 \begin{figure}[!htbp]
     \centering
-    \caption{Últimas 72 horas do resultado utilizando algoritmo AG-MLP descrito na seção \ref{subsec:ag-mlp}. Para a cidade de Florianópolis-SC}
+    \caption{Últimas 72 horas do resultado utilizando algoritmos AG-MLP e AG-MLP-VR, SARIMAX e série real. Para a cidade de Florianópolis-SC}
     \includegraphics[width=\textwidth]{Figuras/cap4/comparison_hibrids_fl.png}
     \source{Autor.}
     \label{fig:cap4_flor_3_days_hibrids}
+\end{figure}
+
+\section{Bom Jesus da Lapa}
+
+A terceira série temporal escolhida se trata de 15 dias, entre 17/07/2020 às 0 horas e 31/07/2020 às 23 horas da base para a cidade de Bom Jesus da Lapa - BA. A Tabela \ref{tab:cap4_comp_bjl_autoarima_psoaco} mostra o resultado da comparação entre os algoritmos descritos na seção \ref{subsec:autoarima_psoaco}.
+
+\begin{table}[htbp]
+\caption{Comparação resultados entre \textbf{auto ARIMA} e PSO-ACO.}
+\begin{center}
+\begin{tabular}{ccccc}
+                    & \Longstack{SARIMAX \\ (p,d,q)(P,D,Q,S)} & Variáveis Exógenas & AICc & MAPE  \\\hline
+auto ARIMA & (3,0,2)(2,0,2,24) & Todas & -825.1507 & 0.9518 \\\hline
+PSO-ACO             & (1,0,0)(2,0,2,24) & \Longstack{Temperatura do Ar \\ Umidade Relativa \\ Velocidade do Vento} & \textbf{-831.802} & \textbf{0.9233} \\\hline
+\label{tab:cap4_comp_bjl_autoarima_psoaco}
+\end{tabular}
+\end{center}
+\end{table}
+
+Como descrito no início do capítulo, e pelo que foi obtido, optou-se por utilizar a modelagem SARIMAX obtida descrita na segunda linha da Tabela \ref{tab:cap4_comp_bjl_autoarima_psoaco}, como entrada para os algoritmos híbridos descritos pela seções \ref{subsec:ag-mlp} e \ref{subsec:ag-mlp-vr}, resultando finalmente nos resultados descritos pela Tabela \ref{tab:cap4_comp_bjl_agmlp_agmlpvr}. Para ambos os algoritmos foram utilizadas 4 gerações e 15 indivíduos.
+
+\begin{table}[htbp]
+\caption{Comparação entre modelos para aos dados da cidade de Florianópolis-SC}
+\begin{center}
+\begin{tabular}{ccccc}
+                & MAE & MSE & MAPE \\\hline
+SARIMAX         & 0.03115 & \textbf{0.00252} & 0.3486 \\\hline
+Híbrido AG-MLP  & \textbf{0.03105} & 0.00304 & \textbf{0.19175} \\\hline
+Híbrido AG-MLP-VR & 0.03224 & 0.002783 & 0.25194 \\\hline
+\label{tab:cap4_comp_bjl_agmlp_agmlpvr}
+\end{tabular}
+\end{center}
+\end{table}
+
+Um resultado gráfico pode ser observado na Figura \ref{fig:cap4_bjl_3_days_hibrids} em que se mostra as 3 formas de modelagem e o seu resultado sobre as últimas 72 horas de dados.
+
+\begin{figure}[!htbp]
+    \centering
+    \caption{Últimas 72 horas do resultado utilizando algoritmos AG-MLP e AG-MLP-VR, SARIMAX e série real. Para a cidade de Bom Jesus da Lapa - BA}
+    \includegraphics[width=\textwidth]{Figuras/cap4/comparison_hibrids_bjl.png}
+    \source{Autor.}
+    \label{fig:cap4_bjl_3_days_hibrids}
 \end{figure}

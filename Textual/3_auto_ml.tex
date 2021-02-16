@@ -233,7 +233,7 @@ Neste trabalho para as etapas 2, Modelo do Resíduo e 3, Modelo de Combinação,
 \subsection{AG-MLP}
 \label{subsec:ag-mlp}
 
-Para obter a MLP bem parametrizada o algoritmo procura os melhores parâmetros para o MLP. Este tipo de otimização pode ser encontrado na literatura, sendo muito útil para aumentar a performance deste tipo de RNA \cite{ramchoun2016multilayer, idrissi2016genetic} . Nesta busca, o algoritmo gera uma população de MLPs, com parâmetros aleatórios, avalia estes e ranqueia o melhores parâmetros. Depois disso, uma nova população é gerada, após um cruzamento entre melhores e piores MLPs. A melhor MLP é repetida na próxima geração. Depois do cruzamento, os parâmetros numéricos sofrem mutação. Esta nova população é re-avaliada e o ciclo continua.
+Para obter a MLP bem parametrizada o algoritmo procura os melhores parâmetros para o MLP. Este tipo de otimização pode ser encontrado na literatura, sendo muito útil para aumentar a performance deste tipo de RNA \cite{ramchoun2016multilayer, idrissi2016genetic}. Nesta busca, o algoritmo gera uma população de MLPs, com parâmetros aleatórios, avalia estes e ranqueia o melhores parâmetros. Depois disso, uma nova população é gerada, após um cruzamento entre melhores e piores MLPs. A melhor MLP é repetida na próxima geração. Depois do cruzamento, os parâmetros numéricos sofrem mutação. Esta nova população é re-avaliada e o ciclo continua.
 
 O algoritmo busca para cada MLP baseado nos cromossomos mostrados na Figura \ref{fig:cap3_cromo_mlp}. Para implementação das MLP é utilizada a biblioteca Scikit-learn do python \cite{scikit-learn}. É definido uma quantidade máxima de iterações em 500. Mais detalhadamente, cada um dos cromossomos tem as seguintes características:
 
