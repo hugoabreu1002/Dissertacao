@@ -1,9 +1,156 @@
-\chapter{Auto ML e Modelos Propostos}
-\label{cap:auto_ml}
+\chapter{Materiais e Métodos}
+\label{cap:materiais_e_metodos}
 
-\section{Meta-heurísticas}
+\section{Modelagem de Séries Temporais}
+\label{sec:series_temp}
 
-\subsection{ACO}
+\subsection{Séries temporais}
+
+Series temporais se tratam de um conjunto de observações orientadas no tempo \cite{brockwell2002introduction}. Diferentemente de sinais, series temporais são sempre discretas.
+
+O fato de series temporais serem denominadas dessa forma está na correlação temporal de cada um dos seus pontos. A correlação temporal significa que cada observação pode ser linearmente modelada por observações passadas. 
+
+\subsection{Modelos Lineares}
+
+\subsubsection{ARIMA}
+
+Dada uma série temporal definida como $X_t$ sendo $t$ o índice inteiro de cada observação, o modelo ARMA$(p^{'},q)$ é dado pela Equação \ref{eq:arma_model} abaixo, o parâmetro $\alpha_i$ é responsável pela parte auto regressiva do modelo, enquanto que $\theta_i$ pela média móvel. O termo $\varepsilon_t$ representa o erro que é assumido como uma variável aleatória IID, amostrada a partir de uma distribuição normal com média zero \cite{brockwell2002introduction}. 
+
+\begin{equation}
+\label{eq:arma_model}
+    X_t-\alpha_1X_{t-1}- \dots -\alpha_{p'}X_{t-p'} = \varepsilon_t + \theta_1 \varepsilon_{t-1} + \cdots +\theta_q \varepsilon_{t-q}
+\end{equation}
+
+Uma outra forma de descrever o modelo ARMA é obtida ao se utilizar o operador $L$ que representa os \textit{Lags}, como sendo índices do passado em relação a uma variável, como na Equação \ref{eq:arma_model_L}.
+
+\begin{equation}
+\label{eq:arma_model_L}
+    \left(1 - \sum_{i=1}^{p'} \alpha_i L^i\right) X_t=\left(1 + \sum_{i=1}^q \theta_i L^i\right) \varepsilon_t
+\end{equation}
+
+Assumindo que o polinômio $\left( 1 - \sum_{i=1}^{p'} \alpha_i L^i \right)$ possui uma raiz unitária como um fator de  $(1-L)$ de multiplicidade $d$, então a Equação \ref{eq:arma_model_L} pode ser reescrita como \ref{eq:arma_model_alpta2phi}.
+
+\begin{equation}
+\label{eq:arma_model_alpta2phi}
+    \left(1 - \sum_{i=1}^{p'} \alpha_i L^i\right)=\left(1 - \sum_{i=1}^{p'-d} \varphi_i L^i\right)\left(1 - L \right)^d
+\end{equation}
+
+O modelo ARIMA$(p,d,q)$ é uma derivação do modelo ARMA ao expressar a fatoração polinomial mostrada anteriormente, substituindo \ref{eq:arma_model_alpta2phi} em \ref{eq:arma_model_L} e definindo $p=p^{'} - d$, o que leva a equação \ref{eq:arima_model}.
+
+\begin{equation}
+\label{eq:arima_model}
+    \left( 1 - \sum_{i=1}^p \varphi_i L^i \right) (1-L)^d X_t = \left( 1 + \sum_{i=1}^q \theta_i L^i \right) \varepsilon_t \
+\end{equation}
+
+A equação \ref{eq:arima_model} pode ser ainda simplificada da forma \ref{eq:arima_model_simple}, esta simplificação ajuda a na modelagem SARIMAX que seguirá na próxima seção \ref{subsec:sarimax}.
+
+\begin{equation}
+\label{eq:arima_model_simple}
+    \phi_p(L)(1-L)^d X_t = c + \theta_q(L)\varepsilon_t
+\end{equation}
+
+Em que, $\phi_p(L)$ se torna o termo auto regressivo de ordem $p$, $c$ é uma constante e $\theta_q(L)\varepsilon_t$ o termo de médias móveis de ordem $q$, $d$ é a ordem de diferenciação. 
+
+A teoria dos modelos ARIMA teve sua ampla aplicação por conta dos esforços dos trabalhos de Box et al. \cite{box2011time}, que desenvolveu um método sistemático, iterativo e prático de construção de modelos \cite{ramos2015performance}, dividido em três etapas, identificação do modelo, estimativa de parâmetro e diagnóstico do modelo.
+
+\subsubsection{SARIMAX}
+\label{subsec:sarimax}
+
+A partir da equação \ref{eq:arima_model_simple} que descreve um modelo ARIMA não sazonal é possível chegar a modelagem SARIMAX, que leva em conta a sazonalidade e também variáveis exógenas. Primeiramente, o modelo SARIMA, que leva em consideração apenas a sazonalidade é representado pela equação \cite{arunraj2016application, de2018modelo}
+
+\begin{equation}
+\label{eq:sarima_model}
+    \phi_p(L)\Phi_P(L^S)(1-L)^d(1-L^S)^D X_t = c + \theta_q(L)\Theta_Q(L^S)\varepsilon_t
+\end{equation}
+
+Em que, $\Phi_P(L^S)$ se torna o termo auto regressivo sazonal de ordem $P$, $S$ é a frequência de sazonalidade, deve ser 12 para dados mensais e 24 para dados horários. $D$ é a quantidade de diferenciações para a parte sazonal do modelo e $\Theta_Q(L^S)$ se trata do termo de médias móveis sazonal.
+
+O modelo SARIMA tem capacidade de lidar séries temporais estacionárias e não estacionárias com elementos sazonais \cite{arunraj2016application}. Com base no comportamento das séries temporais, dados exógenos podem ter potencial impacto em melhorar as estimativas do modelo. Portanto, é importante considerar variáveis externas, que fornecem respostas significativas para os dados remotos. O modelo que lida com variáveis externas é chamado SARIMAX. Neste modelo, variáveis exógenas $X_t$ podem ser modeladas com uma regressão linear múltipla \cite{arunraj2016application,  elamin2018modeling}, com pesos $\beta$. O termo $w_t$ trata da série residual restante e pode ser representado a partir do modelo SARIMA, como mostra a equação \ref{eq:sarimax_model}.
+
+\begin{equation}
+\label{eq:sarimax_model}
+    \begin{gathered}
+        Z_t = c + \beta X_t +w_t\\
+        w_t = \frac{\theta_q(L)\Theta_Q(L^S)}{ \phi_p(L)\Phi_P(L^S)(1-L)^d(1-L^S)^D}\varepsilon_t
+    \end{gathered}
+\end{equation}
+
+\section{Métricas de Performance}
+
+As métricas de performance são necessárias para identificar se os modelos se comportam de melhor forma. As métricas que serão apresentadas a seguir são comumente utilizadas seja para zerar e otimizar um modelo ARIMA/SARIMAX, como no caso do AIC, como para comparar modelagens híbridas, no caso de MAPE, MAE e RMSE.
+
+O critério de Akaike (AIC) estima a perda de informação quando uma distribuição de probabilidade $f$ associada aos dados reais é aproximada por uma distribuição de probabilidade $g$, obtida a partir de algum modelo. A medida de discrepância entre $f$ e $g$ $I(f,g)$ é igual a medida de informação de Kullback–Leibler \cite{wagenmakers2004aic}.
+
+Por fim é definido como na equação \ref{eq:aic}, em que $L$ é o modelo candidato com máxima verossimilhança, determinado a partir de ajustes de $k$, que é o número de parâmetros do modelo, de uma forma que seja maximizada a probabilidade de que $f$ seja equivalente $g$ \cite{wagenmakers2004aic}.
+
+\begin{equation}
+\label{eq:aic}
+    AIC = 2k - 2\ln(\hat L)
+\end{equation}
+
+A métrica AIC não é boa para um número pequeno de amostras, para isto foi formulada a métrica AICc, que seria a versão corrigida \cite{hurvich1989regression}. Na equação \ref{eq:aicc} abaixo AICc é dado pela correção de AIC por um termo, dependente de $k$ e $n$, sendo $n$ a quantidade de amostras. Se $n \to \infty$ o termo adicional zera, e AICc tende a AIC. 
+
+\begin{equation}
+\label{eq:aicc}
+    AICc = AIC + \frac{2(k+1)(k+2)}{n - k -2}
+\end{equation}
+
+As métrica MAPE, MAE e RMSE, dadas pelas equações \ref{eq:MAPE} \ref{eq:MAE} \ref{eq:RMSE}, respectivamente, são utilizadas para avaliar as previsões dos modelos. 
+
+\begin{equation}
+\label{eq:MAPE}
+    MAPE = \frac{1}{n}\sum_{t=1}^{n} \frac{|Y_t - \hat{Y_t}|}{Y_t}
+\end{equation}
+
+\begin{equation}
+\label{eq:MAE}
+    MAE = \frac{1}{n}\sum_{t=1}^{n} |Y_t - \hat{Y_t}|
+\end{equation}
+
+\begin{equation}
+\label{eq:RMSE}
+    RMSE = \sqrt{\frac{1}{n}\sum_{t=1}^{n} |Y_t - \hat{Y_t}|^2}
+\end{equation}
+
+\section{Dados Utilizados} 
+\label{sec:dados_prep}
+
+\subsection{Origem}
+\label{subsec:orig_data}
+
+O Instituto Nacional de Meteorologia disponibiliza dados a partir de diversas estações espalhadas pelo país através de seu Banco de Dados Meteorológicos (BDMEP) \cite{INMET}.
+
+Os dados são adquiridos a partir de estações de medição, havendo as automáticas e as convencionais, estas últimas estão sendo descontinuadas \cite{lima2020comparaccao}. Utilizando os dados do INMET e outras fontes de dados abertos é possível obter criar modelos de interpolação espacial e predição de temporal \cite{mendes2020integraccao}.
+
+Os dados obtidos contém informação pelo período entre 2008 e 2020, entretanto, como o intuito é fazer predição de curto prazo são trabalhadas series de no máximo 30 dias, para avaliação dos modelos que será introduzidos é possível então utilizar diversas séries horárias com o limite máximo de 720 amostras. Entre os dados presentes, se encontram séries temporais horárias das seguintes variáveis:
+
+\begin{enumerate}
+    \item Radiação Global (W/m\textsuperscript{2})
+    \item Pressão Atmosférica, máxima e mínima (mb)
+    \item \textbf{Precipitação Total} (mm)
+    \item \textbf{Temperatura do Ar em Bulbo Seco} (\textdegree{}C)
+    \item Temperatura máxima, mínima e de Ponto de Orvalho (\textdegree{}C)
+    \item \textbf{Umidade Relativa}, máxima e mínima (\%)
+    \item \textbf{Velocidade do Vento e em rajada} (m/s)
+    \item Direção do vento (graus)
+\end{enumerate}
+
+Estando destacadas em negrito as variáveis disponíveis escolhidas como variáveis exógenas para previsão temporal da radiação.
+
+\subsection{Pré-processamento}
+
+Neste trabalho os dados serão utilizados para previsão de séries temporais utilizando os modelos discutidos no capítulo \ref{sec:auto_ml}, desenvolvidos para melhorar a performance de modelos lineares do capítulo \ref{sec:series_temp}. Para isto, é preciso fazer um tratamento inicial na base de dados oriunda do INMET, este tratamento visa adequar as variáveis aos modelos. 
+
+Normalmente, dados obtidos por fontes externas nem sempre estão 100\% corretos, um dos problemas comuns é a presença de lixo, dados vazios ou formato inadequado. No caso dos dados trabalhados do INMET, foi necessário fazer a adequação de formato e complementação de dados faltantes. Além disto, os dados foram trabalhados em escala entre 0 e 1, para isto é feita a divisão pelo máximo valor encontrado na base, para cada variável. No fim da previsão é possível retornar a escala original.
+
+A complementação de dados faltantes se dá a partir do método chamado \textit{forward fill}, que significa que o último valor válido observado é utilizado para substituir valores vazios de cada variável.
+
+\section{Auto ML e Modelos Propostos}
+\label{sec:auto_ml}
+
+\subsection{Meta-heurísticas}
+
+\subsubsection{ACO}
 \label{subsec:aco}
 
 Se trata de um algoritmo de mete-heurístico formulado no anos 90 \cite{dorigo1999ant} no intuito de solucionar problemas de combinatoriais de larga escala. O algoritmo se baseia no comportamento de formigas em busca de alimento \cite{dorigo2006ant}. Uma forma mais simples de visualizar a movimentação dos agentes é a partir da teoria de grafos.
@@ -72,7 +219,7 @@ Neste trabalho será utilizado $Q = 1$  e $\rho = 0.5$ enquanto que o custo $L_{
     exp(\frac{C_y - C_x}{C_x})
 \end{equation}
 
-\subsection{PSO}
+\subsubsection{PSO}
 \label{subsec:pso}
 
 A otimização por enxame de partículas (PSO) é baseada em um população de agentes inspirada no comportamento de bando de pássaros, cardumes de peixe e enxames em geral \cite{kennedy1995particle}. No PSO, cada solução é a posição de partícula no espaço de busca. A inteligência neste algoritmo se dar por conta do enxame dessas partículas se move através do espaço de busca para encontrar uma posição ideal. 
@@ -151,7 +298,7 @@ O Algoritmo \ref{algo:auto_arima} abaixo descreve, de forma simplificada, como �
 \label{algo:auto_arima}
 \end{algorithm}
 
-Por mais que o \textbf{auto ARIMA} seja muito utilizado, ainda assim não contempla algumas possibilidades que poderiam levar a melhores modelos. Uma melhoria seria a realização de testes com possibilidades diferentes de frequências de sazonalidade. Outro avanço estaria em realizar uma escolha automatizada das melhores variáveis exógenas dentre as inseridas como entrada, visto que algumas variáveis exógenas podem piorar a modelagem.
+Por mais que o \textbf{auto ARIMA} seja muito utilizado, ainda assim não contempla algumas possibilidades que poderiam levar a melhores modelos. Uma melhoria seria a realização de testes com possibilidades diferentes de frequências de sazonalidade. Outro avanço estaria em realizar uma escolha automatizada das melhores variáveis exógenas dentre as inseridas como entrada, isto que algumas variáveis exógenas podem piorar a modelagem.
 
 Para executar as melhorias propostas, pode-se inicialmente pensar em utilizar um algoritmo de busca rede, a partir de todas as possibilidades de iteração dos parâmetros (p, d, q, P, D, Q, S, X), X representado as variáveis exógenas, portanto, todos os parâmetros podendo ser descritos como variáveis inteiras positivas. Com isso, permutação das possibilidades pode levar números altos de iterações necessárias, por exemplo, se cada um dos parâmetros tiver 3 possibilidades, levaria a 6.561 iterações.
 
@@ -166,7 +313,7 @@ A Figura \ref{fig:cap3_fluxograma_sarimax} demonstra o fluxograma da procura pel
 \begin{figure}[!htbp]
     \centering
     \caption{Fluxograma esquemático dos modelos de correção de resíduo propostos. Os cromossomos são C1-C4. Dois modelos são gerados, um para o resíduo outro para combinar o resíduo modelado com a previsão SARIMAX.}
-    \includegraphics[width=\textwidth]{Figuras/cap3/fluxograma_sarimax.jpg}
+    \includegraphics[width=\textwidth]{Figuras/mat_e_met/fluxograma_sarimax.jpg}
     \source{Autor.}
     \label{fig:cap3_fluxograma_sarimax}
 \end{figure}
@@ -179,7 +326,7 @@ Nesta seção será explicada a forma geral de correção do resíduo, dado pelo
 \begin{figure}[htbp]
     \centering
     \caption{Fluxograma esquemático dos modelos de correção de resíduo propostos. Os cromossomos são C1-C4. Dois modelos são gerados, um para o resíduo outro para combinar o resíduo modelado com a previsão SARIMAX.}
-    \includegraphics[width=\textwidth]{Figuras/cap3/fluxograma_cromossomos.jpg}
+    \includegraphics[width=\textwidth]{Figuras/mat_e_met/fluxograma_cromossomos.jpg}
     \source{Autor.}
     \label{fig:cap3_fluxograma_cromossomo}
 \end{figure}
@@ -223,7 +370,7 @@ Ainda sobre o processo representado pela Figura \ref{fig:cap3_fluxograma_cromoss
 \begin{figure}[!htbp]
     \centering
     \caption{Fluxograma detalhado sobre requisitos do Modelo do Resíduo e Modelo de Combinação não Linear.}
-    \includegraphics[width=\textwidth]{Figuras/cap3/fluxograma_modelos_res_comb.jpg}
+    \includegraphics[width=\textwidth]{Figuras/mat_e_met/fluxograma_modelos_res_comb.jpg}
     \source{Autor.}
     \label{fig:cap3_fluxograma_modelos_res_comb}
 \end{figure}
@@ -240,7 +387,7 @@ O algoritmo busca para cada MLP baseado nos cromossomos mostrados na Figura \ref
 \begin{figure}[!htbp]
     \centering
     \caption{Cromossomos do Algoritmo Genético da MLP.}
-    \includegraphics[width=\textwidth]{Figuras/cap3/cromo_mlp.jpg}
+    \includegraphics[width=\textwidth]{Figuras/mat_e_met/cromo_mlp.jpg}
     \source{Autor.}
     \label{fig:cap3_cromo_mlp}
 \end{figure}

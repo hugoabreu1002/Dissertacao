@@ -1,9 +1,9 @@
 \chapter{Resultados}
 \label{cap:resultados}
 
-\section{Protocolo}
+\section{Resultados Esperados}
 
-Os resultados a seguir seguem o mesmo protocolo de uso dos modelos discutidos até o momento, sumarizados a seguir:
+Para obtenção dos resultados é estabelecido um protocolo de uso dos modelos discutidos no capítulo de Materiáis e métodos \ref{cap:materiais_e_metodos}, sumarizados a seguir:
 
 \begin{outline}[enumerate]
     \1 É executado o algoritmo \textbf{auto ARIMA} para obtenção do modelo SARIMAX, com frequência sazonal 24 e todas as variáveis exógenas destacadas na seção \ref{subsec:orig_data} fazendo parte da regressão.
@@ -21,9 +21,11 @@ Os resultados a seguir seguem o mesmo protocolo de uso dos modelos discutidos at
         \2 Para todas as séries foi estipulado 80\% de dados para treino, que são utilizados para realizar o treinamento do algoritmo de otimização e hibridização, bem como todas as MLPs e 20\% para teste, que utilizado para avaliação do modelo híbrido final.
 \end{outline}
 
-Com base neste protocolo de uso do algoritmos propostos, nas próximas seções são apresentados os resultados para algumas cidades brasileiras escolhidas.
+Com base neste protocolo de uso do algoritmos propostos, nas próximas seções são apresentados resultados parciais para algumas cidades brasileiras escolhidas. Espera-se que os resultados finais sigam o mesmo padrão observado nos parciais, porém para mais localidades.
 
-\section{Maceió}
+\section{Resultados Parciais}
+
+\subsection{Maceió}
 
 A primeira série temporal escolhida se trata dos últimos 30 dias, entre 12/03/2020 às 21 horas e 11/04/2020 às 20 horas da base para a cidade de Maceió-AL. A Tabela \ref{tab:cap4_comp_maceio_autoarima_psoaco} mostra o resultado da comparação entre os algoritmos descritos na seção \ref{subsec:autoarima_psoaco}. 
 
@@ -59,12 +61,12 @@ Um resultado gráfico pode ser observado na Figura \ref{fig:cap4_maceio_3_days_h
 \begin{figure}[!htbp]
     \centering
     \caption{Últimas 72 horas do resultado utilizando algoritmos AG-MLP e AG-MLP-VR, SARIMAX e série real. Para a cidade de Maceió-AL}
-    \includegraphics[width=\textwidth]{Figuras/cap4/comparison_hibrids_mc.png}
+    \includegraphics[width=\textwidth]{Figuras/results/comparison_hibrids_mc.png}
     \source{Autor.}
     \label{fig:cap4_maceio_3_days_hibrids}
 \end{figure}
 
-\section{Florianópolis}
+\subsection{Florianópolis}
 
 A segunda série temporal escolhida se trata dos últimos 15 dias, entre 17/12/2019 às 0 horas e 31/12/2019 às 23 horas da base para a cidade de Florianópolis-SC. A Tabela \ref{tab:cap4_comp_flor_autoarima_psoaco} mostra o resultado da comparação entre os algoritmos descritos na seção \ref{subsec:autoarima_psoaco}.
 
@@ -100,12 +102,12 @@ Um resultado gráfico pode ser observado na Figura \ref{fig:cap4_flor_3_days_hib
 \begin{figure}[!htbp]
     \centering
     \caption{Últimas 72 horas do resultado utilizando algoritmos AG-MLP e AG-MLP-VR, SARIMAX e série real. Para a cidade de Florianópolis-SC}
-    \includegraphics[width=\textwidth]{Figuras/cap4/comparison_hibrids_fl.png}
+    \includegraphics[width=\textwidth]{Figuras/results/comparison_hibrids_fl.png}
     \source{Autor.}
     \label{fig:cap4_flor_3_days_hibrids}
 \end{figure}
 
-\section{Bom Jesus da Lapa}
+\subsection{Bom Jesus da Lapa}
 
 A terceira série temporal escolhida se trata de 15 dias, entre 17/07/2020 às 0 horas e 31/07/2020 às 23 horas da base para a cidade de Bom Jesus da Lapa - BA. A Tabela \ref{tab:cap4_comp_bjl_autoarima_psoaco} mostra o resultado da comparação entre os algoritmos descritos na seção \ref{subsec:autoarima_psoaco}.
 
@@ -141,7 +143,8 @@ Um resultado gráfico pode ser observado na Figura \ref{fig:cap4_bjl_3_days_hibr
 \begin{figure}[!htbp]
     \centering
     \caption{Últimas 72 horas do resultado utilizando algoritmos AG-MLP e AG-MLP-VR, SARIMAX e série real. Para a cidade de Bom Jesus da Lapa - BA}
-    \includegraphics[width=\textwidth]{Figuras/cap4/comparison_hibrids_bjl.png}
+    \includegraphics[width=\textwidth]{Figuras/results/comparison_hibrids_bjl.png}
     \source{Autor.}
     \label{fig:cap4_bjl_3_days_hibrids}
 \end{figure}
+
