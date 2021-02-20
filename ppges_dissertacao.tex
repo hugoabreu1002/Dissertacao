@@ -22,19 +22,22 @@
 \newtheorem{example}[theorem]{Exemplo}
 %\theoremstyle{remark}
 \newtheorem{remark}[theorem]{Observação}
-%###############################################################%
 
-\input{Configuracao/Configuracao.tex}
-\begin{document}
-
+% para criar environments, seguir como abaixo
 %Numbered environment
 %\newcounter{example}[section]
 %\newenvironment{example}[1][]{\refstepcounter{example}\par\medskip
 %\noindent \textbf{Example~\theexample. #1} \rmfamily}{\medskip}
 
 %Numbered environment defined with Newtheorem
-\newtheorem{SampleEnv}{Sample Environment}[section]
-%
+%\newtheorem{SampleEnv}{Sample Environment}[section]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                         Configuração                          %
+%###############################################################%
+
+\input{Configuracao.tex}
+\begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                     INCLUSÃO DOS ARQUIVOS                     %
@@ -107,7 +110,7 @@
 
     \addcontentsline{toc}{chapter}{\bibname}
     \bibliographystyle{abntex2-alf}
-    \bibliography{Bibliografia/Bibliografia}
+    \bibliography{Bibliografia.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                       APÊNDICES E ANEXOS                      %
