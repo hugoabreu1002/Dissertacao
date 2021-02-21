@@ -1,7 +1,8 @@
 \documentclass[% -- opções da classe memoir --
 	12pt,				% tamanho da fonte
 	%openright,			% capítulos começam em pág ímpar (insere página vazia caso preciso)
-	%twoside,			% para impressão em verso e anverso. Oposto a oneside
+	openany,
+	oneside,			% para impressão em verso e anverso. Oposto a oneside
 	a4paper,			% tamanho do papel. 
 	english,			% idioma adicional para hifenização
 	brazil				% o último idioma é o principal do documento
@@ -36,7 +37,7 @@
 %                         Configuração                          %
 %###############################################################%
 
-\input{Configuracao.tex}
+\input{Configs/Configuracao.tex}
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -110,7 +111,7 @@
 
     \addcontentsline{toc}{chapter}{\bibname}
     \bibliographystyle{abntex2-alf}
-    \bibliography{Bibliografia.bib}
+    \bibliography{Configs/Bibliografia.bib}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                       APÊNDICES E ANEXOS                      %
