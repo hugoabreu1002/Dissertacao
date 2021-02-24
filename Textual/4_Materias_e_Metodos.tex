@@ -81,7 +81,7 @@ As métricas de performance são necessárias para identificar se os modelos se 
 
 O critério de Akaike (AIC) estima a perda de informação quando uma distribuição de probabilidade $f$ associada aos dados reais é aproximada por uma distribuição de probabilidade $g$, obtida a partir de algum modelo. A medida de discrepância entre $f$ e $g$ $I(f,g)$ é igual a medida de informação de Kullback–Leibler \cite{wagenmakers2004aic}.
 
-Por fim é definido como na equação \ref{eq:aic}, em que $L$ é o modelo candidato com máxima verossimilhança, determinado a partir de ajustes de $k$, que é o número de parâmetros do modelo, de uma forma que seja maximizada a probabilidade de que $f$ seja equivalente $g$ \cite{wagenmakers2004aic}.
+Por fim é definido como na equação \ref{eq:aic}, em que $L$ é o modelo candidato com máxima verossimilhança, determinado a partir de ajustes de $k$, que é o número de parâmetros do modelo, de uma forma que seja maximizada a probabilidade de que $f$ seja equivalente a $g$ \cite{wagenmakers2004aic}.
 
 \begin{equation}
 \label{eq:aic}
@@ -157,7 +157,7 @@ Se trata de um algoritmo de mete-heurístico formulado no anos 90 \cite{dorigo19
 
 Grafos consistem de uma tripla formada por um conjunto de vértices, um conjunto de bordas e uma relação entre 2 vértices, não necessariamente distintos \cite{west2001introduction}, na Figura \ref{fig:cap3_graph_example} está representado um grafo cujos vértices são $\{a, b, c, d, e, f, g\}$, em que estes tem bordas com pesos, para o algoritmo ACO estes pesos representam a distância entre pontos no espaço de busca. Uma trilha é definida como um conjunto de tuplas que representam uma movimentação sobre o grafo, exemplo: \{(a,b),(b,e),(e,c)\}, no algoritmo ACO cada formiga, forma sua trilha e incrementa feromônio nas arestas caminhos de acordo com uma função de \textit{fitness}. 
 
-\begin{figure}
+\begin{figure}[!hb]
 \centering
 \caption{Exemplo de Grafo.}
 \begin{tikzpicture}[scale=2, auto,swap]
@@ -312,7 +312,7 @@ A Figura \ref{fig:cap3_fluxograma_sarimax} demonstra o fluxograma da procura pel
 
 \begin{figure}[!htbp]
     \centering
-    \caption{Fluxograma esquemático dos modelos de correção de resíduo propostos. Os cromossomos são C1-C4. Dois modelos são gerados, um para o resíduo outro para combinar o resíduo modelado com a previsão SARIMAX.}
+    \caption{Fluxograma para definição do modelo SARIMAX que será utilizado na hibridização. Série original, Modelo SARIMAX e Resíduo são utilizados para treinamento do modelo híbrido.}
     \includegraphics[width=\textwidth]{Figuras/mat_e_met/fluxograma_sarimax.jpg}
     \source{Autor.}
     \label{fig:cap3_fluxograma_sarimax}
