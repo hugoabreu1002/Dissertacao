@@ -14,7 +14,7 @@ O fato de series temporais serem denominadas dessa forma está na correlação t
 
 \subsubsection{ARIMA}
 
-Dada uma série temporal definida como $X_t$ sendo $t$ o índice inteiro de cada observação, o modelo ARMA$(p^{'},q)$ é dado pela Equação \ref{eq:arma_model} abaixo, o parâmetro $\alpha_i$ é responsável pela parte auto regressiva do modelo, enquanto que $\theta_i$ pela média móvel. O termo $\varepsilon_t$ representa o erro que é assumido como uma variável aleatória IID, amostrada a partir de uma distribuição normal com média zero \cite{brockwell2002introduction}. 
+Dada uma série temporal definida como $X_t$ sendo $t$ o índice inteiro de cada observação, o modelo ARMA$(p^{'},q)$ é dado pela Equação \ref{eq:arma_model} abaixo, o parâmetro $\alpha_i$ é responsável pela parte auto regressiva do modelo, enquanto que $\theta_i$ pela média móvel. O termo $\varepsilon_t$ representa o erro que é assumido como uma variável aleatória IID (Independente e Identicamente Distribuída), amostrada a partir de uma distribuição normal com média zero \cite{brockwell2002introduction}. 
 
 \begin{equation}
 \label{eq:arma_model}
@@ -79,7 +79,7 @@ O modelo SARIMA tem capacidade de lidar séries temporais estacionárias e não 
 
 As métricas de performance são necessárias para identificar se os modelos se comportam de melhor forma. As métricas que serão apresentadas a seguir são comumente utilizadas seja para zerar e otimizar um modelo ARIMA/SARIMAX, como no caso do AIC, como para comparar modelagens híbridas, no caso de MAPE, MAE e RMSE.
 
-O critério de Akaike (AIC) estima a perda de informação quando uma distribuição de probabilidade $f$ associada aos dados reais é aproximada por uma distribuição de probabilidade $g$, obtida a partir de algum modelo. A medida de discrepância entre $f$ e $g$ $I(f,g)$ é igual a medida de informação de Kullback–Leibler \cite{wagenmakers2004aic}.
+O critério de Informação de Akaike (AIC) estima a perda de informação quando uma distribuição de probabilidade $f$ associada aos dados reais é aproximada por uma distribuição de probabilidade $g$, obtida a partir de algum modelo. A medida de discrepância entre $f$ e $g$ $I(f,g)$ é igual a medida de informação de Kullback–Leibler \cite{wagenmakers2004aic}.
 
 Por fim é definido como na equação \ref{eq:aic}, em que $L$ é o modelo candidato com máxima verossimilhança, determinado a partir de ajustes de $k$, que é o número de parâmetros do modelo, de uma forma que seja maximizada a probabilidade de que $f$ seja equivalente a $g$ \cite{wagenmakers2004aic}.
 
@@ -257,7 +257,7 @@ O Algoritmo \ref{algo:auto_arima} abaixo descreve, de forma simplificada, como �
     \Enqto{KPPS}{\emph{$d++$}}
     
     $BestAIC = \infty$\\
-    $N = $
+    $N = 0$
     
     \Para{$p \leq 2$}{
         \Para{$q \leq 2$}{

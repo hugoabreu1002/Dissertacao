@@ -4,7 +4,7 @@
 \section{Resultados Esperados}
 \label{sec:protocolo_resultados}
 
-Para obtenção dos resultados é estabelecido um protocolo de uso dos modelos discutidos no capítulo de Materiáis e métodos \ref{cap:materiais_e_metodos}, sumarizados a seguir:
+Para obtenção dos resultados é estabelecido um protocolo de uso dos modelos discutidos no capítulo de Materiais e métodos \ref{cap:materiais_e_metodos}, sumarizados a seguir:
 
 \begin{outline}[enumerate]
     \1 É executado o algoritmo \textbf{auto ARIMA} para obtenção do modelo SARIMAX, com frequência sazonal 24 e todas as variáveis exógenas destacadas na seção \ref{subsec:orig_data} fazendo parte da regressão.
@@ -31,7 +31,7 @@ Com base neste protocolo de uso do algoritmos propostos, nas próximas seções 
 Maceió - AL é a cidade escolhida para primeiro resultado preliminar do protocolo definido. O conjunto de dados para esta cidade, se trata de 30 dias, entre 12/03/2020 às 21 horas e 11/04/2020 às 20 horas da base para a cidade de Maceió-AL. Esta localidade foi escolhida por conta da proposta do projeto de pesquisa e desenvolvimento realizado para a CHESF, também sendo importante destino turístico regional, destacando-se o "turismo de sol e mar" \cite{vasconcelos2019turismo}. A Tabela \ref{tab:cap4_comp_maceio_autoarima_psoaco} mostra o resultado da comparação entre os algoritmos descritos na seção \ref{subsec:autoarima_psoaco}. 
 
 \begin{table}[htbp]
-\caption{Comparação resultados entre \textbf{auto ARIMA} e PSO-ACO.}
+\caption{Comparação resultados entre \textbf{auto ARIMA} e PSO-ACO da cidade de Maceió-AL.}
 \begin{center}
 \begin{tabular}{ccccc}
                     & \Longstack{SARIMAX \\ (p,d,q)(P,D,Q,S)} & Variáveis Exógenas & AICc & MAPE  \\\hline
@@ -74,7 +74,7 @@ Tendo uma região metropolitana importante economicamente, com atrativos ecotur�
 São utilizados os últimos 15 dias da base obtida, entre 17/12/2019 às 0 horas e 31/12/2019 às 23 horas. A Tabela \ref{tab:cap4_comp_flor_autoarima_psoaco} mostra o resultado da comparação entre os algoritmos descritos na seção \ref{subsec:autoarima_psoaco}.
 
 \begin{table}[htbp]
-\caption{Comparação resultados entre \textbf{auto ARIMA} e PSO-ACO.}
+\caption{Comparação resultados entre \textbf{auto ARIMA} e PSO-ACO da cidade de Florianópolis-SC.}
 \begin{center}
 \begin{tabular}{ccccc}
                     & \Longstack{SARIMAX \\ (p,d,q)(P,D,Q,S)} & Variáveis Exógenas & AICc & MAPE  \\\hline
@@ -115,7 +115,7 @@ Novamente, é apresentado um resultado gráfico na Figura \ref{fig:cap4_flor_3_d
 A terceira série temporal escolhida se trata de 15 dias, entre 17/07/2020 às 0 horas e 31/07/2020 às 23 horas da base para a cidade de Bom Jesus da Lapa - BA. Esta localidade foi escolhida por conter plantas fotovoltaicas próximas e ser um dos pontos de maior incidência de radiação fotovoltaica de acordo com o Atlas solarimétrico brasileiro \cite{pereira2017atlas}. A Tabela \ref{tab:cap4_comp_bjl_autoarima_psoaco} mostra o resultado da comparação entre os algoritmos descritos na seção \ref{subsec:autoarima_psoaco}.
 
 \begin{table}[htbp]
-\caption{Comparação resultados entre \textbf{auto ARIMA} e PSO-ACO.}
+\caption{Comparação resultados entre \textbf{auto ARIMA} e PSO-ACO para Bom Jesus da Lapa-BA.}
 \begin{center}
 \begin{tabular}{ccccc}
                     & \Longstack{SARIMAX \\ (p,d,q)(P,D,Q,S)} & Variáveis Exógenas & AICc & MAPE  \\\hline
@@ -129,7 +129,7 @@ PSO-ACO             & (1,0,0)(2,0,2,24) & \Longstack{Temperatura do Ar \\ Umidad
 Como descrito no início do capítulo, e pelo que foi obtido, optou-se por utilizar a modelagem SARIMAX obtida descrita na segunda linha da Tabela \ref{tab:cap4_comp_bjl_autoarima_psoaco}, como entrada para os algoritmos híbridos descritos pela seções \ref{subsec:ag-mlp} e \ref{subsec:ag-mlp-vr}, resultando finalmente nos resultados descritos pela Tabela \ref{tab:cap4_comp_bjl_agmlp_agmlpvr}. Para ambos os algoritmos foram utilizadas 4 gerações e 15 indivíduos.
 
 \begin{table}[htbp]
-\caption{Comparação entre modelos para aos dados da cidade de Florianópolis-SC}
+\caption{Comparação entre modelos para aos dados da cidade de Bom Jesus da Lapa-BA}
 \begin{center}
 \begin{tabular}{ccccc}
                 & MAE & MSE & MAPE \\\hline
