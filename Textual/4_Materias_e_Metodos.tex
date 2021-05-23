@@ -190,7 +190,7 @@ Por fim cada formiga $k$ se move entre os estados $x$ e $y$ com uma probabilidad
     { \sum_{z\in \mathbf{x^*}} (\tau_{xz}^{\alpha}) (\eta_{xz}^{\beta}) }
 \end{equation}
 
-Na Equação \ref{eq:aco_prob}, $\tau _{xy}$ é a quantidade de ferormônio depositado para a mudança de estado de $x$ para $y$, $\alpha \geq 0$  é um parâmetro de controle da influência de $\tau _{xy}$,$\eta _{xy}$ é a desejabilidade $xy$ tipicamente $1/d_{{xy}}$, em que $d$ é a distância entre os vértices $\textit{x}$ e $\textit{y}$, tendo $\beta  \geq 1$ como seu parâmetro de controle. Os pontos $z\in \mathbf{x^*}$ significa que não pode 
+Na Equação \ref{eq:aco_prob}, $\tau _{xy}$ é a quantidade de ferormônio depositado para a mudança de estado de $x$ para $y$, $\alpha \geq 0$  é um parâmetro de controle da influência de $\tau _{xy}$,$\eta _{xy}$ é a desejabilidade $xy$ tipicamente $1/d_{{xy}}$, em que $d$ é a distância entre os vértices $\textit{x}$ e $\textit{y}$, tendo $\beta  \geq 1$ como seu parâmetro de controle. Os pontos $z\in \mathbf{x^*}$ significa o fato de apenas soluções possíveis no grafo estão representadas nessa equação, ou seja, que nem todos os vértices são conectados entre si.
 
 As trilhas geralmente são atualizadas quando todas as formigas concluem sua solução, aumentando ou diminuindo o nível das trilhas correspondentes aos movimentos que fizeram parte de soluções "boas" ou "ruins", respectivamente. A regra de atualização global de feromônio é como nas equações \ref{eq:aco_tau} e \ref{eq:aco_delta_tau}.
 
